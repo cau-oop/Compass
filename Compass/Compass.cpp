@@ -1,8 +1,10 @@
 //김경태, 이의섭, 한승남
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <fstream>
 #include <string>
 using namespace std;
+
 
 class User
 {
@@ -20,13 +22,14 @@ public:
 	{
 		
 	}
-
-	void main()
+	void GetInfo()
 	{
-		char id[] = "Lee";
-		char * fileName = strcat(id, ".txt");
-		fstream fs(fileName);
-    }
+		char idOnLogin[50] = "kkt752";
+		char *fileName = strcat(idOnLogin, ".txt");
+		cout << fileName << endl;
+	}
+
+	
 };
 /*
 class Licensee
@@ -54,3 +57,7 @@ public:
 
 };
 */
+int main()
+{
+	cout << "das";
+}
