@@ -4,15 +4,12 @@
 #include <string>
 using namespace std;
 
-int main()
-{
-cout<< "hello"<<endl;
-}
+int PID;
+
 
 class Package
 {
 protected:
-	int PID;
 	string Pname;
 	string location;
 	int price;
@@ -28,9 +25,31 @@ public:
 	void addPackage()
 	{
 		cout << "패키지 이름: ";
-		ofstream out("packagelist.txt");
-			cin >> Pname;
-			out << Pname << endl;
-		out.close();
+		getline(cin, Pname);
+		cout << "지역 : ";
+		getline(cin, location);
+		cout << "가격(원화): ";
+		cin >> price;
+		cout << "여행 출발일: ";
+		cin >> trav_start_date;
+		cout << "여행 출발 시간:(시 분) ";
+		cin >> trav_start_hour;
+		cout << "여행기간: ";
+		cin >> how_long_trav;
+		ofstream os;
+		os.open("packagelist.txt");
+		os << Pname << endl;
+		os << location << endl;
+		os << price << endl;
+		os << trav_start_date << endl;
+		os << trav_start_hour << endl;
+		os << how_long_trav << endl;
+		os.close();
 	}
 };
+
+int main()
+{
+	Package p;
+	p.addPackage();
+}
