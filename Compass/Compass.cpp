@@ -1,21 +1,26 @@
-//ê¹€ê²½íƒœ, ì´ì˜ì„­, í•œìŠ¹ë‚¨
+//±è°æÅÂ, ÀÌÀÇ¼·, ÇÑ½Â³²
 #include <iostream>
 #include <fstream>
 #include <string>
 using namespace std;
 
-int PID;
-
+int PID=0;
 
 class Package
 {
 protected:
-	string Pname;
-	string location;
-	int price;
-	int trav_start_date;
-	int trav_start_hour;
-	int how_long_trav;
+	string searchloc; //°¡°í ½ÍÀº Áö¿ª ÀÔ·Â
+	string searchmin; //ÃÖ¼Ò °¡°İ
+	string searchmax; //ÃÖ´ë °¡°İ
+	string searchdate; //Ãâ¹ßÀÏ
+	int searchvia; //°æÀ¯ À¯¹«
+	string searchfree; //ÀÚÀ¯ÀÏÁ¤ À¯¹«
+	string Pname[100]; //ÆĞÅ°Áö ÀÌ¸§
+	string location[100]; //Áö¿ª
+	int price[100];
+	int trav_start_date[100];
+	int trav_start_hour[100];
+	int how_long_trav[100];
 
 public:
 	Package()
@@ -24,32 +29,96 @@ public:
 	}
 	void addPackage()
 	{
-		cout << "íŒ¨í‚¤ì§€ ì´ë¦„: ";
-		getline(cin, Pname);
-		cout << "ì§€ì—­ : ";
-		getline(cin, location);
-		cout << "ê°€ê²©(ì›í™”): ";
-		cin >> price;
-		cout << "ì—¬í–‰ ì¶œë°œì¼: ";
-		cin >> trav_start_date;
-		cout << "ì—¬í–‰ ì¶œë°œ ì‹œê°„:(ì‹œ ë¶„) ";
-		cin >> trav_start_hour;
-		cout << "ì—¬í–‰ê¸°ê°„: ";
-		cin >> how_long_trav;
+		/*int offset;
+		string line;
+		ifstream MyFile;
+		MyFile.open("packagelist.txt");
+		if(MyFile.is_open())
+		{
+			while (!MyFile.eof())
+			{
+				getline(MyFile, line);
+				if ((offset = PID != string::npos)
+					cout << "ÇØ´ç Áö¿ª¿¡ ¸Â´Â ÆĞÅ°Áö¸¦ Ã£¾Ò½À´Ï´Ù : " << searchloc << endl;
+			}
+			MyFile.close();
+		}
+		ÆÄÀÏ³» PID ºñ±³ÇÏ¿© PID °ª Á¸ÀçÇÒ½Ã +1 ¹İº¹
+		*/
+
+		cout << "ÆĞÅ°Áö ÀÌ¸§: ";
+		getline(cin, Pname[PID]); //getline ¹İº¹ Áßº¹ ¹®Á¦ ÇØ°áÇÊ¿ä
+		fflush(stdin);
+		cout << "Áö¿ª : ";
+		getline(cin, location[PID]);
+		fflush(stdin);
+		cout << "°¡°İ(¿øÈ­): ";
+		cin >> price[PID];
+		cout << "¿©Çà Ãâ¹ßÀÏ: ";
+		cin >> trav_start_date[PID];
+		cout << "¿©Çà Ãâ¹ß ½Ã°£:(½Ã ºĞ) ";
+		cin >> trav_start_hour[PID];
+		cout << "¿©Çà±â°£: ";
+		cin >> how_long_trav[PID];
+
 		ofstream os;
 		os.open("packagelist.txt");
-		os << Pname << endl;
-		os << location << endl;
-		os << price << endl;
-		os << trav_start_date << endl;
-		os << trav_start_hour << endl;
-		os << how_long_trav << endl;
+		os << PID << endl;
+		os << Pname[PID] << endl;
+		os << location[PID] << endl;
+		os << price[PID] << endl;
+		os << trav_start_date[PID] << endl;
+		os << trav_start_hour[PID] << endl;
+		os << how_long_trav[PID] << endl;
 		os.close();
+	}
+
+	void searchPackage()
+	{
+		int offset;
+		string line; 
+		ifstream MyFile;
+		MyFile.open("packagelist.txt");
+		cout << "°Ë»ö ¿É¼Ç : " << endl;
+		cout << "";
+		cout << "°¡°í ½ÍÀº Áö¿ªÀ» ÀÔ·ÂÇÏ¼¼¿ä>> ";
+		cin >> searchloc;
+		cout << "ÃÖ¼Ò°¡°İÀ» ÀÔ·ÂÇÏ¼¼¿ä>> ";
+		cin >> searchmin;
+		cout << "ÃÖ´ë°¡°İÀ» ÀÔ·ÂÇÏ¼¼¿ä>> ";
+		cin >> searchmax;
+		cout << "Ãâ¹ßÀÏÀ» ÀÔ·ÂÇÏ¼¼¿ä>> ";
+		cin >> searchdate;
+		cout << "°æÀ¯¸¦ ÇÏ½Ç°Ç°¡¿ä? 0. ¾Æ´Ï¿ä / 1. ¿¹ >> ";
+		cin >> searchmin;
+		cout << "ÀÚÀ¯ÀÏÁ¤ 0. ¾Æ´Ï¿ä / 1. ¿¹ >> ";
+		cin >> searchfree;
+		if (MyFile.is_open()) //¸¶¹«¸® ÇÊ¿ä
+		{
+			while (!MyFile.eof())
+			{
+				getline(MyFile, line);
+				if ((offset = line.find(searchloc, 0)) != string::npos)
+					cout << "ÇØ´ç Áö¿ª¿¡ ¸Â´Â ÆĞÅ°Áö¸¦ Ã£¾Ò½À´Ï´Ù : " << searchloc << endl;
+			}
+			MyFile.close();
+		}
+		else
+			cout << "ÆÄÀÏÀ» ¿­ ¼ö ¾ø½À´Ï´Ù." << endl;
+
+	}
+	void advertisement()
+	{
+
 	}
 };
 
 int main()
 {
 	Package p;
-	p.addPackage();
+	for (int i = 0; i < 5; i++)
+	{
+		p.addPackage();
+		PID++;
+	}
 }
