@@ -79,24 +79,42 @@ public:
 
 	void searchPackage()
 	{
+		int option;
 		int offset;
 		string line; 
 		ifstream MyFile;
 		MyFile.open("packagelist.txt");
 		cout << "검색 옵션 : " << endl;
-		cout << "";
-		cout << "가고 싶은 지역을 입력하세요>> ";
-		cin >> searchloc;
-		cout << "최소가격을 입력하세요>> ";
-		cin >> searchmin;
-		cout << "최대가격을 입력하세요>> ";
-		cin >> searchmax;
-		cout << "출발일을 입력하세요>> ";
-		cin >> searchdate;
-		cout << "경유를 하실건가요? 0. 아니요 / 1. 예 >> ";
-		cin >> searchvia;
-		cout << "자유일정 0. 아니요 / 1. 예 >> ";
-		cin >> searchfree;
+		cout << "1.지역\t2.최소가격\t3.최대가격\t4.출발일\t5.경유\t6.자유일정" << endl;
+		cin >> option;
+		switch (option)
+		{
+		case 1:
+			cout << "가고 싶은 지역을 입력하세요>> ";
+			cin >> searchloc;
+			break;
+		case 2:
+			cout << "최소가격을 입력하세요>> ";
+			cin >> searchmin;
+			break;
+		case 3:
+			cout << "최대가격을 입력하세요>> ";
+			cin >> searchmax;
+			break;
+		case 4:
+			cout << "출발일을 입력하세요>> ";
+			cin >> searchdate;
+			break;
+		case 5:
+			cout << "경유를 하실건가요? 0. 아니요 / 1. 예 >> ";
+			cin >> searchvia;
+			break;
+		case 6:
+			cout << "자유일정 0. 아니요 / 1. 예 >> ";
+			cin >> searchfree;
+			break;
+		}
+
 		if (MyFile.is_open()) //마무리 필요
 		{
 			while (!MyFile.eof())
