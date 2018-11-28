@@ -29,22 +29,26 @@ public:
 	}
 	void addPackage()
 	{
-		/*int offset;
+		int offset;
+		string search;
 		string line;
-		ifstream MyFile;
-		MyFile.open("packagelist.txt");
-		if(MyFile.is_open())
+		ifstream FileCheck;
+		FileCheck.open("packagelist.txt");
+		search = "PID >>"+PID;
+		if(FileCheck.is_open())
 		{
-			while (!MyFile.eof())
+			while (!FileCheck.eof())
 			{
-				getline(MyFile, line);
-				if ((offset = PID != string::npos)
-					cout << "해당 지역에 맞는 패키지를 찾았습니다 : " << searchloc << endl;
+				getline(FileCheck, line);
+				if ((offset = line.find(search, 0)) != string::npos)
+					PID++;
+				else
+					break;
 			}
-			MyFile.close();
+			FileCheck.close();
 		}
-		파일내 PID 비교하여 PID 값 존재할시 +1 반복
-		*/
+		//파일내 PID 비교하여 PID 값 존재할시 +1 반복
+		
 
 		cout << "패키지 이름: ";
 		getline(cin, Pname[PID]); //getline 반복 중복 문제 해결필요
@@ -63,13 +67,13 @@ public:
 
 		ofstream os;
 		os.open("packagelist.txt");
-		os << PID << endl;
-		os << Pname[PID] << endl;
-		os << location[PID] << endl;
-		os << price[PID] << endl;
-		os << trav_start_date[PID] << endl;
-		os << trav_start_hour[PID] << endl;
-		os << how_long_trav[PID] << endl;
+		os << "PID >>" << PID <<  endl;
+		os << "패키지 >>" << Pname[PID] << endl;
+		os << "지역 >>"<<location[PID] << endl;
+		os << "가격 >>"<<price[PID] << endl;
+		os << "출발일 >>"<<trav_start_date[PID] << endl;
+		os << "출발시간 >>"<<trav_start_hour[PID] << endl;
+		os << "여행기간 >>"<<how_long_trav[PID] << endl;
 		os.close();
 	}
 
@@ -90,7 +94,7 @@ public:
 		cout << "출발일을 입력하세요>> ";
 		cin >> searchdate;
 		cout << "경유를 하실건가요? 0. 아니요 / 1. 예 >> ";
-		cin >> searchmin;
+		cin >> searchvia;
 		cout << "자유일정 0. 아니요 / 1. 예 >> ";
 		cin >> searchfree;
 		if (MyFile.is_open()) //마무리 필요
@@ -105,7 +109,66 @@ public:
 		}
 		else
 			cout << "파일을 열 수 없습니다." << endl;
-
+		if (MyFile.is_open()) //마무리 필요
+		{
+			while (!MyFile.eof())
+			{
+				getline(MyFile, line);
+				if ((offset = line.find(searchmin, 0)) != string::npos)
+					cout << "최소가격에 맞는 패키지를 찾았습니다 : " << searchmin << endl;
+			}
+			MyFile.close();
+		}
+		else
+			cout << "파일을 열 수 없습니다." << endl;
+		if (MyFile.is_open()) //마무리 필요
+		{
+			while (!MyFile.eof())
+			{
+				getline(MyFile, line);
+				if ((offset = line.find(searchmax, 0)) != string::npos)
+					cout << "최대가격에 맞는 패키지를 찾았습니다 : " << searchmax << endl;
+			}
+			MyFile.close();
+		}
+		else
+			cout << "파일을 열 수 없습니다." << endl;
+		if (MyFile.is_open()) //마무리 필요
+		{
+			while (!MyFile.eof())
+			{
+				getline(MyFile, line);
+				if ((offset = line.find(searchdate, 0)) != string::npos)
+					cout << "시작 날짜가 맞는 패키지를 찾았습니다 : " << searchdate << endl;
+			}
+			MyFile.close();
+		}
+		else
+			cout << "파일을 열 수 없습니다." << endl;
+		if (MyFile.is_open()) //마무리 필요
+		{
+			while (!MyFile.eof())
+			{
+				getline(MyFile, line);
+				if ((offset = line.find(searchvia, 0)) != string::npos)
+					cout << "경유가 포함된 패키지를 찾았습니다 : " << searchvia << endl;
+			}
+			MyFile.close();
+		}
+		else
+			cout << "파일을 열 수 없습니다." << endl;
+		if (MyFile.is_open()) //마무리 필요
+		{
+			while (!MyFile.eof())
+			{
+				getline(MyFile, line);
+				if ((offset = line.find(searchfree, 0)) != string::npos)
+					cout << "자유여행인 패키지를 찾았습니다 : " << searchfree << endl;
+			}
+			MyFile.close();
+		}
+		else
+			cout << "파일을 열 수 없습니다." << endl;
 	}
 	void advertisement()
 	{
