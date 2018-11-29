@@ -35,28 +35,35 @@ public:
 		int offset;
 		string search;
 		string line;
+		string PIDconv;
 		ifstream FileCheck("packagelist.txt");
-		search = "PID >>" + PID;
 		string s;
+		search = "PID >>"; //+ to_string(PID);
 		if (FileCheck.is_open()) {
 			while (!FileCheck.eof()) {
 				getline(FileCheck, s);
 				cout << s << endl;
 				if ((offset = line.find(search, 0)) != string::npos)
+				{
 					++PID;
+					cout << "yes" << endl;
+
+				}
 			}
+				FileCheck.close();
+			
 		}
 		else {
 			cout << "파일을 찾을 수 없습니다!" << endl;
 		}
 
-		cout << "PID :: " << PID << endl;
+		cout << search << endl;
 		
 		/*if(FileCheck.is_open())
 		{
 			while (!FileCheck.eof())
 			{
-				search = "PID >>" + PID;
+				
 				getline(FileCheck, line);
 				if ((offset = line.find(search, 0)) != string::npos)
 					PID++;
