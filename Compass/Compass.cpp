@@ -29,18 +29,18 @@ public:
 	{
 
 	}
-	void addPackage()
+	void addPackage() //태두리 완성
 	{
 		int offset;
 		string search;
 		string line;
 		ifstream FileCheck;
 		FileCheck.open("packagelist.txt");
-		search = "PID >>"+PID;
 		if(FileCheck.is_open())
 		{
 			while (!FileCheck.eof())
 			{
+				search = "PID >>" + PID;
 				getline(FileCheck, line);
 				if ((offset = line.find(search, 0)) != string::npos)
 					PID++;
@@ -53,7 +53,8 @@ public:
 		
 
 		cout << "패키지 이름: ";
-		getline(cin, Pname[PID]); //getline 반복 중복 문제 해결필요
+		cin.ignore();
+		getline(cin, Pname[PID]);
 		fflush(stdin);
 		cout << "지역 : ";
 		getline(cin, location[PID]);
