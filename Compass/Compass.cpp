@@ -18,6 +18,7 @@ protected:
 
 	string Pname[100]; //패키지 이름
 	string location[100]; //지역
+	string tag[100]; //해시태그
 	int price[100];
 	int via[100];
 	int trav_start_date[100];
@@ -34,9 +35,24 @@ public:
 		int offset;
 		string search;
 		string line;
-		ifstream FileCheck;
-		FileCheck.open("packagelist.txt");
-		if(FileCheck.is_open())
+		ifstream FileCheck("packagelist.txt");
+		search = "PID >>" + PID;
+		string s;
+		if (FileCheck.is_open()) {
+			while (!FileCheck.eof()) {
+				getline(FileCheck, s);
+				cout << s << endl;
+				if ((offset = line.find(search, 0)) != string::npos)
+					++PID;
+			}
+		}
+		else {
+			cout << "파일을 찾을 수 없습니다!" << endl;
+		}
+
+		cout << "PID :: " << PID << endl;
+		
+		/*if(FileCheck.is_open())
 		{
 			while (!FileCheck.eof())
 			{
@@ -50,7 +66,7 @@ public:
 			FileCheck.close();
 		}
 		//파일내 PID 비교하여 PID 값 존재할시 +1 반복
-		
+		*/
 
 		cout << "패키지 이름: ";
 		cin.ignore();
@@ -59,6 +75,8 @@ public:
 		cout << "지역 : ";
 		getline(cin, location[PID]);
 		fflush(stdin);
+		cout << "태그: ";
+		getline(cin, tag[PID]);
 		cout << "가격(원화): ";
 		cin >> price[PID];
 		cout << "경유 유무 (1. YES 2. NO): ";
@@ -77,6 +95,7 @@ public:
 		os << "PID >>" << PID <<  endl;
 		os << "패키지 >>" << Pname[PID] << endl;
 		os << "지역 >>"<<location[PID] << endl;
+		os << "태그 >>" << tag[PID] << endl;
 		os << "가격 >>"<<price[PID] << endl;
 		os << "경유 >>" << via[PID] << endl;
 		os << "출발일 >>"<<trav_start_date[PID] << endl;
