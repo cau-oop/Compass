@@ -85,7 +85,7 @@ public:
 			isSuccess = getUserInfo(inputId, inputPwd, name, legalGender,
 				birthDate, phoneNumber, advertise_AcceptOrNot,
 				interestCountry, interestRegion); // 사용자로부터 정보를 입력 받음. 회원가입 성공 여부를 반환(true, false).
-
+			
 		   // 회원가입 성공 시.
 			if (isSuccess) {
 				cout << "\n성공적으로 등록되셨습니다." << endl;
