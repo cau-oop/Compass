@@ -42,7 +42,6 @@ public:
 			while (!FileCheck.eof()) {
 				search = "PID >>" + to_string(PID);
 				getline(FileCheck, s);
-				cout << s << endl;
 				if ((offset = s.find(search, 0)) != string::npos)
 				{
 					PID++;
@@ -57,22 +56,6 @@ public:
 		}
 		
 		cout << search << endl;
-		
-		/*if(FileCheck.is_open())
-		{
-			while (!FileCheck.eof())
-			{
-				
-				getline(FileCheck, line);
-				if ((offset = line.find(search, 0)) != string::npos)
-					PID++;
-				else
-					break;
-			}
-			FileCheck.close();
-		}
-		//파일내 PID 비교하여 PID 값 존재할시 +1 반복
-		*/
 
 		cout << "패키지 이름: ";
 		cin.ignore();
@@ -145,8 +128,11 @@ public:
 				while (!MyFile.eof())
 				{
 					getline(MyFile, line);
-					if ((offset = line.find("지역 >>"+searchloc, 0)) != string::npos)
-						cout << "해당 지역에 맞는 패키지를 찾았습니다 : " << searchloc << endl;
+					if ((offset = line.find("지역 >>" + searchloc, 0)) != string::npos)
+					{
+						cout << "해당 지역에 맞는 패키지를 찾았습니다 : " << endl;
+						cout << "";
+					}
 				}
 				MyFile.close();
 			}
