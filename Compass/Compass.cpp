@@ -4,7 +4,7 @@
 #include <string>
 using namespace std;
 
-int PID=0;
+int PID;
 
 class Package
 {
@@ -32,22 +32,21 @@ public:
 	}
 	void addPackage() //태두리 완성
 	{
+		PID = 0;
 		int offset;
 		string search;
-		string line;
-		string PIDconv;
 		ifstream FileCheck("packagelist.txt");
 		string s;
-		search = "PID >>"; //+ to_string(PID);
+		
 		if (FileCheck.is_open()) {
 			while (!FileCheck.eof()) {
+				search = "PID >>" + to_string(PID);
 				getline(FileCheck, s);
 				cout << s << endl;
-				if ((offset = line.find(search, 0)) != string::npos)
+				if ((offset = s.find(search, 0)) != string::npos)
 				{
-					++PID;
+					PID++;
 					cout << "yes" << endl;
-
 				}
 			}
 				FileCheck.close();
@@ -56,7 +55,7 @@ public:
 		else {
 			cout << "파일을 찾을 수 없습니다!" << endl;
 		}
-
+		
 		cout << search << endl;
 		
 		/*if(FileCheck.is_open())
