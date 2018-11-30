@@ -73,7 +73,7 @@ public:
 		// 각 메뉴(1~4) 선택 시 operation.
 		switch (optionNum) {
 
-			// 사용자 회원가입
+			// 일반 회원으로의 회원가입
 		case1:
 
 			isSuccess = getUserInfo(ID, PWD, name, legalGender,
@@ -86,7 +86,7 @@ public:
 
 				isPremium = convertToPremiumMemberOrNot();
 
-				// 사용자 정보를 파일(시스템)에 저장.
+				// 입력 받은 정보를 파일(시스템)에 저장.
 				addUserInfo(ID, PWD, isPremium, name, legalGender,
 					birthDate, phoneNumber, advertise_AcceptOrNot,
 					interestCountry, interestRegion); 
@@ -103,30 +103,47 @@ public:
 		case2:
 
 
-			isSuccess = getUserInfo(ID, PWD, name, AgencyName, phoneNumber, travelBusinessLicenseNumber
+			isSuccess = getUserInfo(ID, PWD, name, AgencyName, phoneNumber, travelBusinessLicenseNumber, 
 			mainCountry, mainRegion); // 사용자로부터 정보를 입력 받음. 회원가입 성공 여부를 반환(true, false).
 
-		 //   회원가입 성공 시.
-			//if (isSuccess) {
-			//	cout << "\n성공적으로 등록되셨습니다." << endl;
+		    // 회원가입 성공 시.
+			if (isSuccess) {
+				cout << "\n성공적으로 등록되셨습니다." << endl;
 
-			//	isPremium = convertToPremiumUserOrNot();
 
-			//	 사용자 정보를 파일(시스템)에 저장.
-			//	addUserInfo(inputId, inputPwd, isPremium, name, legalGender,
-			//		birthDate, phoneNumber, advertise_AcceptOrNot,
-			//		interestCountry, interestRegion);
-			//}
+				// 입력 받은 정보를 파일(시스템)에 저장.
+				addUserInfo(ID, PWD, name, AgencyName, phoneNumber,
+					travelBusinessLicenseNumber, mainCountry, mainRegion);
+			}
 
 			// 회원가입 실패 시(실패 : 취소하는 경우 밖에 없음).
-			//else {
-			//	cout << "회원가입을 취소하셨습니다." << endl;
-			//}
+			else {
+				cout << "회원가입을 취소하셨습니다." << endl;
+			}
 
 			break;
 
-			// 사업자 아닌 가이드 회원가입
+			// 가이드 회원가입
 		case3:
+			
+			isSuccess = getUserInfo(ID, PWD, name, phoneNumber, 
+				guideLicenseNumber, mainCountry, mainRegion); // 사용자로부터 정보를 입력 받음. 회원가입 성공 여부를 반환(true, false).
+
+				// 회원가입 성공 시.
+			if (isSuccess) {
+				cout << "\n성공적으로 등록되셨습니다." << endl;
+
+
+				// 입력 받은 정보를 파일(시스템)에 저장.
+				addUserInfo(ID, PWD, name, phoneNumber, 
+					guideLicenseNumber, mainCountry, mainRegion);
+			}
+
+			// 회원가입 실패 시(실패 : 취소하는 경우 밖에 없음).
+			else {
+				cout << "회원가입을 취소하셨습니다." << endl;
+			}
+
 
 			break;
 			
@@ -141,9 +158,10 @@ public:
 		
 	}
 
-	// 사용자 정보를 입력 받음.
+	//// 사용자 정보를 입력 받음.
 
-	// 회원가입 시 필요한 General Member 정보를 입력 받음.
+
+	// General Member로 회원가입 시 필요한 사용자 정보를 입력 받음.
 	// 아이디(글자수 제한), 비밀번호(글자수 제한), 이름(글자수 제한), 성별(M, W만), 생년월일(6자리, 유효한(전에 과제)), 전화번호(11자리) 등
 	// 유효한지 확인하는 함수 구현해서 넣기.
 	// 성별, 생년월일 등 유효한지 확인해야 나중에 파일에서 다시 가져와서 이용할 때 오류 안남(예외 생기는 것 방지).
@@ -221,7 +239,7 @@ public:
 		return true;
 	}
 	 
-	// 회원가입 시 필요한 One-Man Travel Agency 정보를 입력 받음.
+	// One-Man Travel Agency로 회원가입 시 필요한 사용자 정보를 입력 받음.
 	// 유효한지 확인하는 함수 구현해서 넣기.
 	// 유효한지 확인해야 나중에 파일에서 다시 가져와서 이용할 때 오류 안남(예외 생기는 것 방지).
 	static bool getUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_agencyName, char * input_phoneNumber,
@@ -270,16 +288,16 @@ public:
 			cout << "여행사 사업자 등록번호(10자리, '-' 제외)를 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_LicenseNumber;
 			return !isCancelJoinMember(input_LicenseNumber);
-		} while (input_LicenseNumber == '1');
+		} while (atoi(input_LicenseNumber) == '1');
 
-
+		// 전담 나라
 		do {
 			cout << "해당 여행사(패키지)에서 주로 취급하는 나라를 입력해주세요(ex 한국, 미국, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
 			cin >> input_mainCountry;
 			return !isCancelJoinMember(input_mainCountry);
 		} while (atoi(input_mainCountry) == 1);
 
-
+		// 전담 도시(또는 유명 지역 이름 또는 유명 명소)
 		do {
 			cout << "해당 여행사(패키지)에서 주로 취급하는 도시(또는 유명 지역, 관광명소)를 입력해주세요(ex 서울, 뉴욕, 후지산, 신주쿠, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
 			cin >> input_mainRegion;
@@ -290,8 +308,66 @@ public:
 		return true;
 	}
 
-	static bool getAgencyInfo() {
+	// Guide로 회원가입 시 필요한 사용자 정보를 입력받음.
+	// 유효한지 확인하는 함수 구현해서 넣기.
+	// 유효한지 확인해야 나중에 파일에서 다시 가져와서 이용할 때 오류 안남(예외 생기는 것 방지).
+	static bool getUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_phoneNumber,
+		char * input_LicenseNumber, char * input_mainCountry, char * input_mainRegion) {
 
+		cout << "회원님의 정보를 입력받아 '사업자' 회원가입을 진행합니다(회원가입을 취소하고 싶은 경우 각 입력과정들 중 하나에서 0을 입력.)\n" << endl;
+		cout << "\n회원 아이디와 비밀번호를 설정합니다" << endl;
+
+		// 아이디.
+		do {
+			cout << "아이디를 입력해주세요(띄어쓰기 허용 x, 회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cin >> input_ID;
+			return !isCancelJoinMember(input_ID);
+		} while (atoi(input_ID) == 1);
+
+		// 비밀번호.
+		do {
+			cout << "비밀번호를 입력해주세요(띄어쓰기 허용 x, 회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cin >> input_PWD;
+			return !isCancelJoinMember(input_PWD);
+		} while (atoi(input_PWD) == 1);
+
+		// 사업자 이름.
+		do {
+			cout << "사업자 이름을 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cin >> input_name;
+			return !isCancelJoinMember(input_name);
+		} while (atoi(input_name) == 1);
+
+		// 전화번호.
+		do {
+			cout << "전화번호를 입력해주세요(ex 01067891234, 회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cin >> input_phoneNumber;
+			return !isCancelJoinMember(input_phoneNumber);
+		} while (atoi(input_phoneNumber) == 1);
+
+		// 여행 가이드 자격증 번호.
+		do {
+			cout << "여행 가이드 자격증 번호('-' 제외)를 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cin >> input_LicenseNumber;
+			return !isCancelJoinMember(input_LicenseNumber);
+		} while (atoi(input_LicenseNumber) == '1');
+
+		// 전담 나라
+		do {
+			cout << "해당 여행사(패키지)에서 주로 취급하는 나라를 입력해주세요(ex 한국, 미국, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
+			cin >> input_mainCountry;
+			return !isCancelJoinMember(input_mainCountry);
+		} while (atoi(input_mainCountry) == 1);
+
+		// 전담 도시(또는 유명 지역 이름 또는 유명 명소)
+		do {
+			cout << "해당 여행사(패키지)에서 주로 취급하는 도시(또는 유명 지역, 관광명소)를 입력해주세요(ex 서울, 뉴욕, 후지산, 신주쿠, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
+			cin >> input_mainRegion;
+			return !isCancelJoinMember(input_mainRegion);
+		} while (atoi(input_mainRegion) == 1);
+
+
+		return true;
 	}
 
 	// 회원가입 취소
@@ -351,6 +427,7 @@ public:
 		return ctime(&now);
 	}
 
+	// 일반 회원으로 회원가입 시 입력받은 사용자 정보를 파일 시스템에 저장하는 함수.
 	// DB 관리 시스템 클래스 만들어서 파일 입출력은 따로 관리할까?
 	static void addUserInfo(char * input_ID, const char * input_PWD, const bool input_isPremium, const char * input_name, const char input_gender,
 		const char * input_birth, const char * input_phoneNumber, const char input_advertiseAcceptOrNot,
@@ -400,6 +477,80 @@ public:
 		
 	}
 
+	// 여행사로 회원가입 시 입력 받은 사용자 정보를 파일 시스템에 저장하는 함수.
+	static void addUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_agencyName, char * input_phoneNumber,
+		char * input_LicenseNumber, char * input_mainCountry, char * input_mainRegion) {
 
+		const char *fileName = strcat(input_ID, ".txt");
+
+
+		// 각 요소들을 한 줄에 한 요소가 오도록 저장.
+
+		// pwd 저장.
+		writer_UserInfo = fopen(fileName, "w");
+		fputs(input_PWD, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// 사업자 이름 저장.
+		fputs(input_name, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// 여행사 이름 저장.
+		fputs(input_agencyName, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// phone number 저장.
+		fputs(input_phoneNumber, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// 여행사 사업자 등록번호 저장.
+		fputs(input_LicenseNumber, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// 전담 나라 저장.
+		fputs(input_mainCountry, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// 전담 도시(또는 유명 지역 이름 또는 유명 명소) 저장.
+		fputs(input_mainRegion, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+	}
+
+	// 가이드로 회원가입 시 입력 받은 사용자 정보를 파일 시스템에 저장하는 함수.
+	static void addUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_phoneNumber,
+		char * input_LicenseNumber, char * input_mainCountry, char * input_mainRegion) {
+
+		const char *fileName = strcat(input_ID, ".txt");
+
+
+		// 각 요소들을 한 줄에 한 요소가 오도록 저장.
+
+		// pwd 저장.
+		writer_UserInfo = fopen(fileName, "w");
+		fputs(input_PWD, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// 사업자 이름 저장.
+		fputs(input_name, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// phone number 저장.
+		fputs(input_phoneNumber, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// 가이드 자격증 번호 저장.
+		fputs(input_LicenseNumber, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// 전담 나라 저장.
+		fputs(input_mainCountry, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// 전담 도시(또는 유명 지역 이름 또는 유명 명소) 저장.
+		fputs(input_mainRegion, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+	}
 
 };
