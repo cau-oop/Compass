@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include<cstring>
 #include<string>
@@ -14,8 +15,8 @@ using namespace std;
 class LoginSystem {
 private:
 	char *currentLogID;
-	FILE * writer_UserInfo;
-	FILE * reader_UserInfo;
+	static FILE * writer_UserInfo;
+	static FILE * reader_UserInfo;
 
 public:
 	LoginSystem(char * input_ID) {
@@ -54,7 +55,6 @@ public:
 
 			// 사용자 회원가입
 		case1:
-			//cout << "환영합니다 고객님" << endl << registerTime << "에 프리미엄 등급이 되셨습니다.\n\n";
 
 			isSuccess = getUserInfo(inputId, inputPwd, name, legalGender,
 				 birthDate, phoneNumber, advertise_AcceptOrNot,
@@ -67,7 +67,7 @@ public:
 				isPremium = convertToPremiumUserOrNot();
 
 				// 사용자 정보를 파일(시스템)에 저장.
-				addUserInfo(optionNum, inputId, inputPwd, isPremium, name, legalGender,
+				addUserInfo(inputId, inputPwd, isPremium, name, legalGender,
 					birthDate, phoneNumber, advertise_AcceptOrNot,
 					interestCountry, interestRegion); 
 			}
@@ -82,6 +82,26 @@ public:
 			// 1인 여행사(사업자) 회원가입
 		case2:
 
+			isSuccess = getUserInfo(inputId, inputPwd, name, legalGender,
+				birthDate, phoneNumber, advertise_AcceptOrNot,
+				interestCountry, interestRegion); // 사용자로부터 정보를 입력 받음. 회원가입 성공 여부를 반환(true, false).
+
+		   // 회원가입 성공 시.
+			if (isSuccess) {
+				cout << "\n성공적으로 등록되셨습니다." << endl;
+
+				isPremium = convertToPremiumUserOrNot();
+
+				// 사용자 정보를 파일(시스템)에 저장.
+				addUserInfo(inputId, inputPwd, isPremium, name, legalGender,
+					birthDate, phoneNumber, advertise_AcceptOrNot,
+					interestCountry, interestRegion);
+			}
+
+			// 회원가입 실패 시(실패 : 취소하는 경우 밖에 없음).
+			else {
+				cout << "회원가입을 취소하셨습니다." << endl;
+			}
 
 			break;
 
@@ -89,7 +109,7 @@ public:
 		case3:
 
 			break;
-
+			
 		default:
 			exit(0);
 		}
@@ -98,7 +118,7 @@ public:
 	}
 
 	static void login() {
-
+		
 	}
 
 	// 사용자 정보를 입력 받음.
@@ -163,14 +183,14 @@ public:
 
 
 		do {
-			cout << "관심 나라를 입력해주세요(ex 한국, 미국, 회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cout << "관심 나라를 입력해주세요(ex 한국, 미국, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
 			cin >> input_interestCountry;
 			return !isCancelJoinMember(input_interestCountry);
 		} while (atoi(input_interestCountry) == 1);
 
 
 		do {
-			cout << "관심 도시(또는 유명 지역, 관광명소)를 입력해주세요(ex 서울, 뉴욕, 후지산, 신주쿠, 회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cout << "관심 도시(또는 유명 지역, 관광명소)를 입력해주세요(ex 서울, 뉴욕, 후지산, 신주쿠, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
 			cin >> input_interestRegion;
 			return !isCancelJoinMember(input_interestRegion);
 		} while (atoi(input_interestRegion) == 1);
@@ -237,12 +257,51 @@ public:
 	}
 
 	// DB 관리 시스템 클래스 만들어서 파일 입출력은 따로 관리할까?
-	static void addUserInfo(const char * input_ID, const char * input_PWD, const bool input_isPremium, const char * input_name, const char input_gender,
+	static void addUserInfo(char * input_ID, const char * input_PWD, const bool input_isPremium, const char * input_name, const char input_gender,
 		const char * input_birth, const char * input_phoneNumber, const char input_advertiseAcceptOrNot,
 		const char * input_interestCountry, const char * input_interestRegion) {
 
+		const char *fileName = strcat(input_ID, ".txt");
 		
-		writeUserInfo = fopen()
+		
+		//각 요소들은 줄바꿈으로 저장.
+
+		// pwd 저장.
+		writer_UserInfo = fopen(fileName, "w");
+		fputs(input_PWD, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// premium 회원인지 아닌지 저장.(true, false).
+		fputs((input_isPremium ? "true" : "false"), writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// name 저장.
+		fputs(input_name, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// legal gender 저장.
+		fputc(input_gender, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// birth 저장.
+		fputs(input_birth, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// phone number 저장.
+		fputs(input_phoneNumber, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// 광고 수신 여부 저장.
+		fputc(input_advertiseAcceptOrNot, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// 관심 나라 저장.
+		fputs(input_interestCountry, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
+
+		// 관심 도시(또는 유명 지역 또는 유명 명소) 저장.
+		fputs(input_interestRegion, writer_UserInfo);
+		fputs("\n", writer_UserInfo);
 		
 	}
 
