@@ -51,6 +51,7 @@ public:
 		
 
 		cout << "패키지 이름: ";
+		cin.ignore();
 		getline(cin, Pname[PID]); //getline 반복 중복 문제 해결필요
 		fflush(stdin);
 		cout << "지역 : ";
@@ -197,9 +198,5 @@ public:
 int main()
 {
 	Package p;
-	for (int i = 0; i < 5; i++)
-	{
-		p.addPackage();
-		PID++;
-	}
+	p.addPackage();
 }
