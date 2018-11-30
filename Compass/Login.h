@@ -8,8 +8,16 @@
 #define NAME_MAX_LEGTH 30
 #define BIRTH_MAX_LEGTH 6
 #define PHONE_NUMBER_MAX_LEGTH 11
-#define INTEREST_COUNTRY_MAX_LEGTH 30
-#define INTEREST_REGION_MAX_LEGTH 20 // 관심 도시(또는 유명 지역 이름)(다수 선택 가능)
+#define INTEREST_COUNTRY_MAX_LEGTH 50
+#define INTEREST_REGION_MAX_LEGTH 50 // 관심 도시(또는 유명 지역 이름)(다수 선택 가능)
+
+#define AGENCY_NAME_MAX_LENGTH 30
+#define BUSYNESS_LICENSE_MAX_LENGTH 10
+#define MAIN_COUNTRY_MAX_LENGTH 50
+#define MAIN_REGION_MAX_LENGTH 50
+
+#define GUIDE_LICENSE_MAX_LENGTH 30
+
 using namespace std;
 
 class LoginSystem {
@@ -25,21 +33,33 @@ public:
 	}
 
 	static void createMember() {
-		int optionNum;
-		bool isPremium; 
+		int optionNum; // 메뉴 옵션 중 선택 번호.
 		char isSuccess; // 회원가입 성공, 실패 여부.
-		char yesOrNo;
-		char cardNumber[20], inputId[ID_MAX_LENGTH + 1], inputPwd[PWD_MAX_LENGTH + 1],
-			name[NAME_MAX_LEGTH + 1], birthDate[BIRTH_MAX_LEGTH + 1], phoneNumber[PHONE_NUMBER_MAX_LEGTH + 1],
-			interestCountry[INTEREST_COUNTRY_MAX_LEGTH + 1], interestRegion[INTEREST_REGION_MAX_LEGTH + 1];
+
+		// general member, one-man travel agency, guide 중 어느것으로 회원가입 하더라도 공통으로 입력받을 요소.
+		char ID[ID_MAX_LENGTH + 1], PWD[PWD_MAX_LENGTH + 1],
+			name[NAME_MAX_LEGTH + 1], phoneNumber[PHONE_NUMBER_MAX_LEGTH + 1]; 
+		
+		// general member로 회원가입 시 입력받을 요소.
+		bool isPremium;
+		char birthDate[BIRTH_MAX_LEGTH + 1], interestCountry[INTEREST_COUNTRY_MAX_LEGTH + 1],
+			interestRegion[INTEREST_REGION_MAX_LEGTH + 1];
 		char legalGender, advertise_AcceptOrNot;
-		char * registerTime = getCurrentTime(); //프리미엄 회원으로 결제한 날짜와 시간을 나타내는 문자열.
+		
+		// one-man travel agency, guide 중 어느것으로 회원가입 하더라도 공통으로 입력받을 요소.
+		char mainCountry[MAIN_COUNTRY_MAX_LENGTH + 1], mainRegion[MAIN_REGION_MAX_LENGTH + 1];
+
+		// one-man travel agency로 회원가입 시 입력받을 요소.
+		char AgencyName[AGENCY_NAME_MAX_LENGTH + 1], travelBusinessLicenseNumber[BUSYNESS_LICENSE_MAX_LENGTH + 1];
+
+		// guide로 회원가입 시 입력받을 요소.
+		char guideLicenseNumber[GUIDE_LICENSE_MAX_LENGTH + 1];
 
 
 		// 회원가입 창과 회원가입 메뉴(옵션).
 		cout << "\/\/\/ Join Membership \/\/\/" << endl;
 
-		cout << "1 : User\n" << endl;
+		cout << "1 : General Member\n" << endl;
 		cout << "2 : One-man Travel Agency\n" << endl;
 		cout << "3 : Guide except for Travel Agency\n" << endl;
 		cout << "4 : Exit" << endl;
@@ -56,7 +76,7 @@ public:
 			// 사용자 회원가입
 		case1:
 
-			isSuccess = getUserInfo(inputId, inputPwd, name, legalGender,
+			isSuccess = getUserInfo(ID, PWD, name, legalGender,
 				 birthDate, phoneNumber, advertise_AcceptOrNot,
 				 interestCountry, interestRegion); // 사용자로부터 정보를 입력 받음. 회원가입 성공 여부를 반환(true, false).
 			
@@ -64,10 +84,10 @@ public:
 			if (isSuccess) {
 				cout << "\n성공적으로 등록되셨습니다." << endl;
 
-				isPremium = convertToPremiumUserOrNot();
+				isPremium = convertToPremiumMemberOrNot();
 
 				// 사용자 정보를 파일(시스템)에 저장.
-				addUserInfo(inputId, inputPwd, isPremium, name, legalGender,
+				addUserInfo(ID, PWD, isPremium, name, legalGender,
 					birthDate, phoneNumber, advertise_AcceptOrNot,
 					interestCountry, interestRegion); 
 			}
@@ -79,29 +99,29 @@ public:
 
 			break;
 			
-			// 1인 여행사(사업자) 회원가입
+		// 1인 여행사(사업자) 회원가입
 		case2:
 
-			isSuccess = getUserInfo(inputId, inputPwd, name, legalGender,
-				birthDate, phoneNumber, advertise_AcceptOrNot,
-				interestCountry, interestRegion); // 사용자로부터 정보를 입력 받음. 회원가입 성공 여부를 반환(true, false).
-			
-		   // 회원가입 성공 시.
-			if (isSuccess) {
-				cout << "\n성공적으로 등록되셨습니다." << endl;
 
-				isPremium = convertToPremiumUserOrNot();
+			isSuccess = getUserInfo(ID, PWD, name, AgencyName, phoneNumber, travelBusinessLicenseNumber
+			mainCountry, mainRegion); // 사용자로부터 정보를 입력 받음. 회원가입 성공 여부를 반환(true, false).
 
-				// 사용자 정보를 파일(시스템)에 저장.
-				addUserInfo(inputId, inputPwd, isPremium, name, legalGender,
-					birthDate, phoneNumber, advertise_AcceptOrNot,
-					interestCountry, interestRegion);
-			}
+		 //   회원가입 성공 시.
+			//if (isSuccess) {
+			//	cout << "\n성공적으로 등록되셨습니다." << endl;
+
+			//	isPremium = convertToPremiumUserOrNot();
+
+			//	 사용자 정보를 파일(시스템)에 저장.
+			//	addUserInfo(inputId, inputPwd, isPremium, name, legalGender,
+			//		birthDate, phoneNumber, advertise_AcceptOrNot,
+			//		interestCountry, interestRegion);
+			//}
 
 			// 회원가입 실패 시(실패 : 취소하는 경우 밖에 없음).
-			else {
-				cout << "회원가입을 취소하셨습니다." << endl;
-			}
+			//else {
+			//	cout << "회원가입을 취소하셨습니다." << endl;
+			//}
 
 			break;
 
@@ -122,6 +142,8 @@ public:
 	}
 
 	// 사용자 정보를 입력 받음.
+
+	// 회원가입 시 필요한 General Member 정보를 입력 받음.
 	// 아이디(글자수 제한), 비밀번호(글자수 제한), 이름(글자수 제한), 성별(M, W만), 생년월일(6자리, 유효한(전에 과제)), 전화번호(11자리) 등
 	// 유효한지 확인하는 함수 구현해서 넣기.
 	// 성별, 생년월일 등 유효한지 확인해야 나중에 파일에서 다시 가져와서 이용할 때 오류 안남(예외 생기는 것 방지).
@@ -129,7 +151,7 @@ public:
 		char * input_birth, char * input_phoneNumber, char & input_advertiseAcceptOrNot,
 		char * input_interestCountry, char * input_interestRegion) {
 		
-		cout << "회원님의 정보를 입력받아 회원가입을 진행합니다(회원가입을 취소하고 싶은 경우 각 입력과정들 중 하나에서 0을 입력.)\n" << endl;
+		cout << "회원님의 정보를 입력받아 '일반 회원' 회원가입을 진행합니다(회원가입을 취소하고 싶은 경우 각 입력과정들 중 하나에서 0을 입력.)\n" << endl;
 		cout << "\n회원 아이디와 비밀번호를 설정합니다" << endl;
 
 		// 아이디.
@@ -199,6 +221,79 @@ public:
 		return true;
 	}
 	
+	// 회원가입 시 필요한 One-Man Travel Agency 정보를 입력 받음.
+	// 유효한지 확인하는 함수 구현해서 넣기.
+	// 유효한지 확인해야 나중에 파일에서 다시 가져와서 이용할 때 오류 안남(예외 생기는 것 방지).
+	static bool getUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_agencyName, char * input_phoneNumber,
+		char * input_LicenseNumber, char * input_mainCountry, char * input_mainRegion) {
+
+		cout << "회원님의 정보를 입력받아 '사업자' 회원가입을 진행합니다(회원가입을 취소하고 싶은 경우 각 입력과정들 중 하나에서 0을 입력.)\n" << endl;
+		cout << "\n회원 아이디와 비밀번호를 설정합니다" << endl;
+
+		// 아이디.
+		do {
+			cout << "아이디를 입력해주세요(띄어쓰기 허용 x, 회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cin >> input_ID;
+			return !isCancelJoinMember(input_ID);
+		} while (atoi(input_ID) == 1);
+
+		// 비밀번호.
+		do {
+			cout << "비밀번호를 입력해주세요(띄어쓰기 허용 x, 회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cin >> input_PWD;
+			return !isCancelJoinMember(input_PWD);
+		} while (atoi(input_PWD) == 1);
+
+		// 사업자 이름.
+		do {
+			cout << "사업자 이름을 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cin >> input_name;
+			return !isCancelJoinMember(input_name);
+		} while (atoi(input_name) == 1);
+
+		// 여행사 이름.
+		do {
+			cout << "여행사 이름을 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cin >> input_agencyName;
+			return !isCancelJoinMember(input_agencyName);
+		} while (atoi(input_agencyName) == 1);
+
+		// 전화번호.
+		do {
+			cout << "전화번호를 입력해주세요(ex 01067891234, 회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cin >> input_phoneNumber;
+			return !isCancelJoinMember(input_phoneNumber);
+		} while (atoi(input_phoneNumber) == 1);
+
+		// 여행사 사업자 등록번호.
+		do {
+			cout << "여행사 사업자 등록번호(10자리, '-' 제외)를 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cin >> input_LicenseNumber;
+			return !isCancelJoinMember(input_LicenseNumber);
+		} while (input_LicenseNumber == '1');
+
+
+		do {
+			cout << "해당 여행사(패키지)에서 주로 취급하는 나라를 입력해주세요(ex 한국, 미국, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
+			cin >> input_mainCountry;
+			return !isCancelJoinMember(input_mainCountry);
+		} while (atoi(input_mainCountry) == 1);
+
+
+		do {
+			cout << "해당 여행사(패키지)에서 주로 취급하는 도시(또는 유명 지역, 관광명소)를 입력해주세요(ex 서울, 뉴욕, 후지산, 신주쿠, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
+			cin >> input_mainRegion;
+			return !isCancelJoinMember(input_mainRegion);
+		} while (atoi(input_mainRegion) == 1);
+
+
+		return true;
+	}
+
+	static bool getAgencyInfo() {
+
+	}
+
 	// 회원가입 취소
 	static bool isCancelJoinMember(const char * input) {
 		if (atoi(input) == 0) {
@@ -212,7 +307,7 @@ public:
 		}
 	}
 
-	static bool convertToPremiumUserOrNot() {
+	static bool convertToPremiumMemberOrNot() {
 		char yesOrNo;
 		char cardNumber[21];
 		char * registerTime = getCurrentTime(); //프리미엄 고객으로 결제한 날짜와 시간을 나타내는 문자열
