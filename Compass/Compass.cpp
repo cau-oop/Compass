@@ -45,7 +45,6 @@ public:
 				if ((offset = s.find(search, 0)) != string::npos)
 				{
 					PID++;
-					cout << "yes" << endl;
 				}
 			}
 				FileCheck.close();
@@ -55,15 +54,12 @@ public:
 			cout << "파일을 찾을 수 없습니다!" << endl;
 		}
 		
-		cout << search << endl;
-
+		cout << "Package ID :" << PID << endl;
 		cout << "패키지 이름: ";
-		cin.ignore();
+		//cin.ignore();
 		getline(cin, Pname[PID]);
-		fflush(stdin);
 		cout << "지역 : ";
 		getline(cin, location[PID]);
-		fflush(stdin);
 		cout << "태그: ";
 		getline(cin, tag[PID]);
 		cout << "가격(원화): ";
