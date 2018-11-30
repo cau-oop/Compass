@@ -217,10 +217,10 @@ public:
 			return !isCancelJoinMember(input_interestRegion);
 		} while (atoi(input_interestRegion) == 1);
 
-
+		
 		return true;
 	}
-	
+	 
 	// 회원가입 시 필요한 One-Man Travel Agency 정보를 입력 받음.
 	// 유효한지 확인하는 함수 구현해서 넣기.
 	// 유효한지 확인해야 나중에 파일에서 다시 가져와서 이용할 때 오류 안남(예외 생기는 것 방지).
