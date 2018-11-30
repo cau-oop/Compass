@@ -218,19 +218,17 @@ public:
 	}
 
 	void greet(char * id, const char * who) {
-		if (who == "Premium User")
-			printf("\nHello Premium User %s sir.\n", id);
+		if (who == "General User")
+			printf("\nHello General User %s sir.\n", id);
+
+		else if (who == "Premium User")
+			printf("\nHello Premium User sir.\n");
 
 		else if (who == "Travel Agency")
 			printf("\nHello Travel Agency %s sir.\n", id);
 
 		else if (who == "Guide")
 			printf("\nHello Guide %s sir.\n", id);
-	}
-
-	void greet(const char * who) {
-		if (who == "General User")
-			printf("\nHello.\n");
 	}
 
 	static void availGeneralUserOption() {
