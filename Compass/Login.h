@@ -14,8 +14,8 @@ using namespace std;
 class LoginSystem {
 private:
 	char *currentLogID;
-	FILE * writeUserInfo;
-	FILE * readUserInfo;
+	FILE * writer_UserInfo;
+	FILE * reader_UserInfo;
 
 public:
 	LoginSystem(char * input_ID) {
@@ -237,21 +237,13 @@ public:
 	}
 
 	// DB 관리 시스템 클래스 만들어서 파일 입출력은 따로 관리할까?
-	static void addUserInfo(int optionNumber, const char * input_ID, const char * input_PWD, const bool input_isPremium, const char * input_name, const char input_gender,
+	static void addUserInfo(const char * input_ID, const char * input_PWD, const bool input_isPremium, const char * input_name, const char input_gender,
 		const char * input_birth, const char * input_phoneNumber, const char input_advertiseAcceptOrNot,
 		const char * input_interestCountry, const char * input_interestRegion) {
 
+		
 		writeUserInfo = fopen()
 		
-		switch (optionNumber) {
-		case1:
-
-		case2:
-
-		case3:
-
-		default:
-		}
 	}
 
 
