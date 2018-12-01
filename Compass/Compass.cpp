@@ -73,7 +73,7 @@ protected:
 		getline(cin, tag[PID]);
 		cout << "가격(원화): ";
 		cin >> price[PID];
-		cout << "경유 유무 (1. YES 2. NO): ";
+		cout << "경유 유무 (1. YES 0. NO): ";
 		cin >> via[PID];
 		cout << "여행 출발일: ";
 		cin >> trav_start_date[PID];
@@ -81,7 +81,7 @@ protected:
 		cin >> trav_start_hour[PID];
 		cout << "여행기간: ";
 		cin >> how_long_trav[PID];
-		cout << "자유여행 (1. YES 2. NO) : ";
+		cout << "자유여행 (1. YES 0. NO) : ";
 		cin >> free_trav[PID];
 		cout << "최소인원 :";
 		cin >> minppl[PID];
@@ -107,7 +107,8 @@ protected:
 	void searchPackage()
 	{
 		int option[6] = { 0 };
-		int offset[6];
+		int offset[6] = { 0 };
+		string comparedata[6] = { 0 };
 		int foundpackage[100] = { 0 };
 		int count = 0;
 		int pidcount = 0;
@@ -166,15 +167,74 @@ protected:
 				while (!MyFile.eof())
 				{
 					getline(MyFile, line);
+					if (option[0] == 1)
+					{
 						if ((offset[0] = line.find(searchloc, 0)) != string::npos)
 						{
-							
-							cout << "해당 지역에 맞는 패키지를 찾았습니다 : " << endl;
-							cout << line << endl;
+							comparedata[0] = line;
 							foundpackage[count] = 1;
 							count++;
 						}
+					}
+					if (option[1] == 1)
+					{
+						if ((offset[1] = line.find("가격 >>" + searchmin, 0)) != string::npos)
+						{
+							comparedata[1] = line;
+							foundpackage[count] = 1;
+							count++;
+						}
+							
+					}
+					if (option[2] == 1)
+					{
+						if ((offset[2] = line.find("가격 >>" + searchmax, 0)) != string::npos)
+						{
+							comparedata[2] = line;
+							foundpackage[count] = 1;
+							count++;
+						}
+					}
+					if (option[3] == 1)
+					{
+						if ((offset[3] = line.find("출발일 >>" + searchdate, 0)) != string::npos)
+						{
+							comparedata[3] = line;
+							foundpackage[count] = 1;
+							count++;
+						}
+					}
+					if (option[4] == 1)
+					{
+						if ((offset[4] = line.find("경유 >>" + searchvia, 0)) != string::npos)
+						{
+							comparedata[4] = line;
+							foundpackage[count] = 1;
+							count++;
+						}
+					}
+					if (option[5] == 1)
+					{
+						if ((offset[5] = line.find("자유여행 >>" + searchfree, 0)) != string::npos)
+						{
+							comparedata[5] = line;
+							foundpackage[count] = 1;
+							count++;
+						}
+					}
 						pidcount++;
+					}
+				if (comparedata[0] != comparedata[1] /*!= comparedata[2] != comparedata[3] != comparedata[4] != comparedata[5]*/)
+				{
+
+				}
+				else
+				{
+					for (int i = 0; i < 6; i++)
+					{
+						if(comparedata[i]!=0)
+						cout << comparedata[i] << endl;
+					}
 					}
 				MyFile.close();
 			}
@@ -257,7 +317,7 @@ protected:
 int main()
 {
 	Package p;
-		p.addPackage();
+		//p.addPackage();
 		p.searchPackage();
 		
 }
