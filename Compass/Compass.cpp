@@ -242,14 +242,15 @@ protected:
 		}
 	}
 
-	
+	void buyPackage()
+	{
+		cout << "패키지 구매" << endl;
+
+	}
 	
 };
 
-class BuyPack : public Package
-{
 
-};
 
 int main()
 {
