@@ -200,7 +200,7 @@ public:
 
 	//	exitMessage();
 	//}
-
+ 
 	static void initialMessage() {
 		printf("////////////////////   Welcome to Compass!!!   ////////////////////\n\n");
 
