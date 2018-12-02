@@ -202,15 +202,18 @@ public:
 	//}
 
 	static void initialMessage() {
-		printf("////////////////////   Welcome to Compass!!!   ////////////////////\n");
+		printf("////////////////////   Welcome to Compass!!!   ////////////////////\n\n");
+
+		printf("1. Join Membership(회원가입)\n");
+		printf("2. Login\n\n");
 	}
 
 	static void loginOptionMessage() {
 		printf("\nWho are you?\n");
 		printf("1 : General User\n");
 		printf("2 : One-man Travel Agency\n");
-		printf("3 : Guide except for Travel Agency\n");
-		printf("4 : Exit");
+		printf("3 : Guide\n");
+		printf("4 : Exit\n");
 	}
 
 	static void exitMessage() {

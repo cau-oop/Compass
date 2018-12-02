@@ -3,6 +3,9 @@
 #include<cstring>
 #include<string>
 #include<ctime>
+#include<io.h>
+#include "WorkFlow_Greeter.h"
+
 #define ID_MAX_LENGTH 30
 #define PWD_MAX_LENGTH 30
 #define NAME_MAX_LEGTH 30
@@ -18,11 +21,16 @@
 
 #define GUIDE_LICENSE_MAX_LENGTH 30
 
+#define MAX_LOGIN_NUM 5
+#define MAX_USER_TYPE_LENGTH 30
 using namespace std;
+
+// 서버 연동 할 때 파일 입출력 주의. lock 걸어야 할수도 있고 아니면 파일 오픈시 각 함수에서 file 포인터 정의해서 오픈 close 각각 따로 해줘야 할 수도 있다.
 
 class LoginSystem {
 private:
-	char *currentLogID;
+	char * currentLogID;
+	char * currentUserType;
 	static FILE * writer_UserInfo;
 	static FILE * reader_UserInfo;
 
@@ -73,7 +81,7 @@ public:
 		// 각 메뉴(1~4) 선택 시 operation.
 		switch (optionNum) {
 
-			// 일반 회원으로의 회원가입
+		// 일반 회원 회원가입
 		case1:
 
 			isSuccess = getUserInfo(ID, PWD, name, legalGender,
@@ -123,13 +131,13 @@ public:
 
 			break;
 
-			// 가이드 회원가입
+		// 가이드 회원가입
 		case3:
 			
 			isSuccess = getUserInfo(ID, PWD, name, phoneNumber, 
 				guideLicenseNumber, mainCountry, mainRegion); // 사용자로부터 정보를 입력 받음. 회원가입 성공 여부를 반환(true, false).
 
-				// 회원가입 성공 시.
+			// 회원가입 성공 시.
 			if (isSuccess) {
 				cout << "\n성공적으로 등록되셨습니다." << endl;
 
@@ -154,8 +162,144 @@ public:
 
 	}
 
-	static void login() {
-		
+	//// 일반 회원일 때, 여행사 일 때, 가이드 일 때 반복되는(공통인) 부분 깔끔하게 정리 하기.
+	// 고칠때 strcpy(currentUserType, "one-man travel agency"); <- 각각에서 이 문장 하나만 고치면 될듯.
+	// optionNum 받아와서 switch 해서 각각 별로 strcpy(currentUserType, "one-man travel agency"); 이거 넣기.
+	void login() {
+		int optionNum, loginNum = 0;
+		bool isSuccess = false; // 로그인 성공, 실패. 초기값 : false
+		char inputID[ID_MAX_LENGTH + 1], inputPWD[PWD_MAX_LENGTH + 1];
+		Greeter::loginOptionMessage();
+
+		cout << "\n입력 : ";
+		cin >> optionNum;
+
+		// 메뉴(옵션) 중 선택.
+		cout << "입력 : ";
+		cin >> optionNum;
+
+
+		// 각 메뉴(1~4) 선택 시 operation.
+		switch (optionNum) {
+
+		// 일반 회원 로그인.
+		case1:
+			do {
+
+				printf("\n아이디를 입력하세요.(로그인 취소 : ID : 0 )\n");
+				printf("ID : ");
+				scanf("%s", inputID);
+
+				if (!strcmp(inputID, "0"))
+					break;
+			
+				printf("\n비밀번호를 입력하세요.(로그인 취소 : PWD : 0)\n");
+				printf("PWD : ");
+				scanf("%s", inputPWD);
+
+				if (!strcmp(inputPWD, "0"))
+					break;
+
+				// 연속으로 5번 틀리면 프로그램 강제종료.
+				loginNum++;
+				if (loginNum > MAX_LOGIN_NUM)
+					exit(0);
+
+				isSuccess = checkIsUser(optionNum, inputID, inputPWD);
+
+			} while (!isSuccess);
+
+
+			//로그인 성공 시 현재 로그인 중인 아이디 및 user type(일반회원인지, 여행사인지 가이드인지) 저장.
+			if (isSuccess) {
+				currentLogID = (char *)malloc(sizeof(char)*ID_MAX_LENGTH);  // 로그아웃 시 동적 할당 free해줘야.
+				currentUserType = (char *)malloc(sizeof(char)*MAX_USER_TYPE_LENGTH);
+
+				strcpy(currentLogID, inputID);
+				strcpy(currentUserType, "general member");
+			}
+			break;
+
+			// 1인 여행사(사업자) 회원가입
+		case2:
+			do {
+
+				printf("\n아이디를 입력하세요.(로그인 취소 : ID : 0 )\n");
+				printf("ID : ");
+				scanf("%s", inputID);
+
+				if (!strcmp(inputID, "0"))
+					break;
+
+				printf("\n비밀번호를 입력하세요.(로그인 취소 : PWD : 0)\n");
+				printf("PWD : ");
+				scanf("%s", inputPWD);
+
+				if (!strcmp(inputPWD, "0"))
+					break;
+
+				// 연속으로 5번 틀리면 프로그램 강제종료.
+				loginNum++;
+				if (loginNum > MAX_LOGIN_NUM)
+					exit(0);
+
+				isSuccess = checkIsUser(optionNum, inputID, inputPWD);
+
+			} while (!isSuccess);
+
+
+			//로그인 성공 시 현재 로그인 중인 아이디 및 user type(일반회원인지, 여행사인지 가이드인지) 저장.
+			if (isSuccess) {
+				currentLogID = (char *)malloc(sizeof(char)*ID_MAX_LENGTH);  // 로그아웃 시 동적 할당 free해줘야.
+				currentUserType = (char *)malloc(sizeof(char)*MAX_USER_TYPE_LENGTH);
+
+				strcpy(currentLogID, inputID);
+				strcpy(currentUserType, "one-man travel agency"); 
+			}
+			break;
+
+			// 가이드 회원가입
+		case3:
+			do {
+
+				printf("\n아이디를 입력하세요.(로그인 취소 : ID : 0 )\n");
+				printf("ID : ");
+				scanf("%s", inputID);
+
+				if (!strcmp(inputID, "0"))
+					break;
+
+				printf("\n비밀번호를 입력하세요.(로그인 취소 : PWD : 0)\n");
+				printf("PWD : ");
+				scanf("%s", inputPWD);
+
+				if (!strcmp(inputPWD, "0"))
+					break;
+
+				// 연속으로 5번 틀리면 프로그램 강제종료.
+				loginNum++;
+				if (loginNum > MAX_LOGIN_NUM)
+					exit(0);
+
+				isSuccess = checkIsUser(optionNum, inputID, inputPWD);
+
+			} while (!isSuccess);
+
+
+			//로그인 성공 시 현재 로그인 중인 아이디 및 user type(일반회원인지, 여행사인지 가이드인지) 저장.
+			if (isSuccess) {
+				currentLogID = (char *)malloc(sizeof(char)*ID_MAX_LENGTH);  // 로그아웃 시 동적 할당 free해줘야.
+				currentUserType = (char *)malloc(sizeof(char)*MAX_USER_TYPE_LENGTH);
+
+				strcpy(currentLogID, inputID);
+				strcpy(currentUserType, "guide");
+			}
+			break;
+
+		default:
+			exit(0);
+		}
+
 	}
 
 	//// 사용자 정보를 입력 받음.
@@ -515,6 +659,7 @@ public:
 		fputs(input_mainRegion, writer_UserInfo);
 		fputs("\n", writer_UserInfo);
 
+		fclose(writer_UserInfo);
 	}
 
 	// 가이드로 회원가입 시 입력 받은 사용자 정보를 파일 시스템에 저장하는 함수.
@@ -551,6 +696,64 @@ public:
 		fputs(input_mainRegion, writer_UserInfo);
 		fputs("\n", writer_UserInfo);
 
+		fclose(writer_UserInfo);
 	}
+
+	// 로그인 시 로그인 성공과 실패 여부를 반환.
+	// 로그인 시 입력한 아이디와 비밀번호에 일치하는 사용자 등록정보가 있는지 확인.
+	bool checkIsUser(int optionNum, char * input_ID, char * input_PWD) {
+		char user_ID[ID_MAX_LENGTH + 1], user_PWD[PWD_MAX_LENGTH + 1];
+		bool exist;
+		const char *fileName;
+		int exist;
+
+		switch (optionNum)
+		{
+
+		// 일반 회원으로 로그인 시
+		case1:
+			fileName = strcat(input_ID, ".txt"); 
+			break;
+
+		// 1인 여행사로 로그인 시 
+		case2:
+			fileName = strcat(input_ID, ".txt");
+			break;
+
+		// 가이드로 로그인 시
+		case3:
+			fileName = strcat(input_ID, ".txt");
+			break;
+
+		default:
+			break;
+		}
+
+		exist = _access("test.txt", 0); // 존재하면 exist : 0, 존재하지 않으면 exist : -1.
+		
+		// 해당 아이디 파일(input_ID.txt)이 존재하면
+		if (!exist) {
+			reader_UserInfo = fopen(fileName, "r");
+			
+			fgets(user_PWD, PWD_MAX_LENGTH, reader_UserInfo);
+			fclose(reader_UserInfo);
+
+			if (strcmp(input_PWD, user_PWD)) {
+				printf("비밀번호가 잘못되었습니다.\n");
+				return false;
+			}
+
+			else
+				return true;
+		}
+
+		// 해당 아이디 파일(input_ID.txt)이 존재하지 않으면
+		else {
+			printf("아이디가 잘못되었습니다.\n");
+			return false;
+		}
+
+	}
+
 
 };
