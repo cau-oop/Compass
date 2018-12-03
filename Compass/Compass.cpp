@@ -115,11 +115,11 @@ protected:
 	}
 
 	// 벡터에서 word를 찾아서 출력한다
-	void search(vector<string>& v, string& word)
+	void search(vector<string>& v, vector<string>& word)
 	{
 		for (int i = 0; i < v.size(); i++)
 		{
-			int index = v[i].find(word);
+			int index = v[i].find(word[i]);
 			if (index != -1)
 				cout << v[i] << endl;
 		}
@@ -130,7 +130,7 @@ protected:
 		vector<string> v;
 		int option[6] = { 0 };
 		int offset[6] = { 0 };
-		string comparedata[6] = { "0","0","0","0","0","0" };
+		string comparedata[6] = { 0, };
 		int count = 0;
 		int pidcount = 0;
 		string str;
@@ -191,16 +191,14 @@ protected:
 		spack.open("packagelist.txt");
 		fileRead(spack, v);
 		string word;
-		string searchtotal;
+		vector<string> searchtotal;
 		for (int i = 0; i < 6; i++)
 		{
 			if (option[i] == 1)
 			{
-				searchtotal = searchtotal + " " + comparedata[i];
+				searchtotal.push_back(comparedata[i]);
 			}
-		}
-		
-		cout << searchtotal << endl;	
+		}	
 		search(v, searchtotal);
 
 		/*if (spack.is_open()) //마무리 필요
