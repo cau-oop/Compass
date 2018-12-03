@@ -3,10 +3,11 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <iomanip>
+//#include <iomanip>
+
 using namespace std;
 
-int PID;
+int PID=0;
 
 class Package
 {
@@ -135,7 +136,7 @@ public:
 		vector<string> v;
 		int option[7] = { 0 };
 		int offset[7] = { 0 };
-		string comparedata[7] = { 0 };
+		string comparedata[7];
 		int count = 0;
 		string line;
 
@@ -208,7 +209,7 @@ public:
 	void buyPackage()
 	{
 		cout << "패키지 구매" << endl;
-
+		cout << "구매 방법 : 1.카드\t2.무통장입금\t3.Payco\t4.카카오페이" << endl;
 	}
 
 };
