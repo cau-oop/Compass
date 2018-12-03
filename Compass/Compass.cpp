@@ -1,7 +1,9 @@
-	//김경태, 이의섭, 한승남
+//김경태, 이의섭, 한승남
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+#include <iomanip>
 using namespace std;
 
 int PID;
@@ -15,11 +17,12 @@ protected:
 	string searchdate; //출발일
 	int searchvia; //경유 유무
 	string searchfree; //자유일정 유무
+	string searchppl; //여행인원
 	string reviewstr;
-	
+
 	float rank;
 	int buyer;
-	
+
 	int reviewbuyer;
 	string Pname[100]; //패키지 이름
 	string location[100]; //지역
@@ -34,7 +37,7 @@ protected:
 	int free_trav[100];
 	int minppl[100];
 	int maxppl[100];
- public:
+public:
 	Package()
 	{
 
@@ -46,7 +49,7 @@ protected:
 		string search;
 		ifstream FileCheck("packagelist.txt");
 		string s;
-		
+
 		if (FileCheck.is_open()) {
 			while (!FileCheck.eof()) {
 				search = "PID >>" + to_string(PID);
@@ -56,13 +59,13 @@ protected:
 					PID++;
 				}
 			}
-				FileCheck.close();
-			
+			FileCheck.close();
+
 		}
 		else {
 			cout << "파일을 찾을 수 없습니다!" << endl;
 		}
-		
+
 		cout << "Package ID :" << PID << endl;
 		cout << "패키지 이름: ";
 		//cin.ignore();
@@ -91,28 +94,49 @@ protected:
 		ofstream os;
 		os.open("packagelist.txt", ios::app);
 		os << "PID >>" << PID;
-		os << "패키지 >>" << Pname[PID];
-		os << "지역 >>"<<location[PID];
-		os << "태그 >>" << tag[PID];
-		os << "가격 >>"<<price[PID];
-		os << "경유 >>" << via[PID];
-		os << "출발일 >>"<<trav_start_date[PID];
-		os << "출발시간 >>"<<trav_start_hour[PID];
-		os << "여행기간 >>"<<how_long_trav[PID];
-		os << "자유여행 >>" << free_trav[PID] << endl;;
+		os << " || 패키지 >>" << Pname[PID];
+		os << " || 지역 >>" << location[PID];
+		os << " || 태그 >>" << tag[PID];
+		os << " || 가격 >>" << price[PID];
+		os << " || 경유 >>" << via[PID];
+		os << " || 출발일 >>" << trav_start_date[PID];
+		os << " || 출발시간 >>" << trav_start_hour[PID];
+		os << " || 여행기간 >>" << how_long_trav[PID];
+		os << " || 자유여행 >>" << free_trav[PID];
+		os << " || 최소인원 >>" << minppl[PID];
+		os << " || 최대인원 >>" << maxppl[PID] << endl;
 
 		os.close();
 	}
 
+	void fileRead(ifstream& spack, vector<string>& v)
+	{
+		string line;
+
+		while (getline(spack, line))
+			v.push_back(line);
+
+	}
+
+	// 벡터에서 word를 찾아서 출력한다
+	void search(vector<string>& v, string& word)
+	{
+		for (int i = 0; i < v.size(); i++)
+		{
+			int index = v[i].find(word);
+			if (index != -1)
+				cout << v[i] << endl;
+
+		}
+	}
+
 	void searchPackage()
 	{
-		int option[6] = { 0 };
-		int offset[6] = { 0 };
-		string comparedata[6] = { "0" };
-		int foundpackage[100] = { 0 };
+		vector<string> v;
+		int option[7] = { 0 };
+		int offset[7] = { 0 };
+		string comparedata[7] = { 0 };
 		int count = 0;
-		int pidcount = 0;
-		string str;
 		string line;
 
 		cout << "검색 옵션 : " << endl;
@@ -122,6 +146,7 @@ protected:
 		{
 			cout << "가고 싶은 지역을 입력하세요>> ";
 			cin >> searchloc;
+			comparedata[0] = searchloc;
 		}
 		cout << "2.최소가격 1. Yes  2. No" << endl;
 		cin >> option[1];
@@ -129,6 +154,7 @@ protected:
 		{
 			cout << "최소가격을 입력하세요>> ";
 			cin >> searchmin;
+			comparedata[1] = searchmin;
 		}
 		cout << "3.최대가격 1. Yes  2. No" << endl;
 		cin >> option[2];
@@ -136,6 +162,7 @@ protected:
 		{
 			cout << "최대가격을 입력하세요>> ";
 			cin >> searchmax;
+			comparedata[2] = searchmax;
 		}
 		cout << "4.출발일 1. Yes  2. No" << endl;
 		cin >> option[3];
@@ -143,6 +170,7 @@ protected:
 		{
 			cout << "출발일을 입력하세요>> ";
 			cin >> searchdate;
+			comparedata[3] = searchdate;
 		}
 		cout << "5.경유 1. Yes  2. No" << endl;
 		cin >> option[4];
@@ -150,6 +178,7 @@ protected:
 		{
 			cout << "경유를 하실건가요? 0. 아니요 / 1. 예 >> ";
 			cin >> searchvia;
+			comparedata[4] = searchvia;
 		}
 
 		cout << "6.자유일정 1. Yes  2. No" << endl;
@@ -158,88 +187,22 @@ protected:
 		{
 			cout << "자유일정 0. 아니요 / 1. 예 >> ";
 			cin >> searchfree;
+			comparedata[5] = searchfree;
 		}
-		ifstream MyFile;
-		MyFile.open("packagelist.txt");
-		if (MyFile.is_open()) //마무리 필요
+		cout << "7.여행인원 1. Yes  2. No" << endl;
+		cin >> option[6];
+		if (option[6] == 1)
 		{
-			pidcount = 0;
-			while (!MyFile.eof())
-			{
-				getline(MyFile, line);
-				if (option[0] == 1)
-				{
-					if ((offset[0] = line.find(searchloc, 0)) != string::npos)
-					{
-						comparedata[0] = line;
-						foundpackage[count] = 1;
-						count++;
-					}
-				}
-				if (option[1] == 1)
-				{
-					if ((offset[1] = line.find("가격 >>" + searchmin, 0)) != string::npos)
-					{
-						comparedata[1] = line;
-						foundpackage[count] = 1;
-						count++;
-					}
-
-				}
-				if (option[2] == 1)
-				{
-					if ((offset[2] = line.find("가격 >>" + searchmax, 0)) != string::npos)
-					{
-						comparedata[2] = line;
-						foundpackage[count] = 1;
-						count++;
-					}
-				}
-				if (option[3] == 1)
-				{
-					if ((offset[3] = line.find("출발일 >>" + searchdate, 0)) != string::npos)
-					{
-						comparedata[3] = line;
-						foundpackage[count] = 1;
-						count++;
-					}
-				}
-				if (option[4] == 1)
-				{
-					if ((offset[4] = line.find("경유 >>" + searchvia, 0)) != string::npos)
-					{
-						comparedata[4] = line;
-						foundpackage[count] = 1;
-						count++;
-					}
-				}
-				if (option[5] == 1)
-				{
-					if ((offset[5] = line.find("자유여행 >>" + searchfree, 0)) != string::npos)
-					{
-						comparedata[5] = line;
-						foundpackage[count] = 1;
-						count++;
-					}
-				}
-				pidcount++;
-			}
-
-			for (int j = 0; j < 6; j++)
-			{
-				for (int i = 0; i < 6; i++)
-				{
-					if ((comparedata[j] != "0") && (comparedata[j].compare(comparedata[i]) == 0))
-					{
-						cout << line << endl;
-					}
-				}
-			}
-				MyFile.close();
-			
-
-
+			cout << "여행인원 >> ";
+			cin >> searchppl;
+			comparedata[6] = searchppl;
 		}
+		ifstream spack;
+		spack.open("packagelist.txt");
+		fileRead(spack, v);
+		search(v, searchloc);
+		spack.close();
+
 	}
 
 	void buyPackage()
@@ -247,7 +210,7 @@ protected:
 		cout << "패키지 구매" << endl;
 
 	}
-	
+
 };
 
 
@@ -255,7 +218,7 @@ protected:
 int main()
 {
 	Package p;
-		//p.addPackage();
-		p.searchPackage();
-		
+	//p.addPackage();
+	p.searchPackage();
+
 }
