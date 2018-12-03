@@ -143,6 +143,7 @@ protected:
 		{
 			cout << "가고 싶은 지역을 입력하세요>> ";
 			cin >> searchloc;
+			comparedata[0] = searchloc;
 		}
 		cout << "2.최소가격 1. Yes  2. No" << endl;
 		cin >> option[1];
@@ -150,6 +151,7 @@ protected:
 		{
 			cout << "최소가격을 입력하세요>> ";
 			cin >> searchmin;
+			comparedata[1] = searchmin;
 		}
 		cout << "3.최대가격 1. Yes  2. No" << endl;
 		cin >> option[2];
@@ -157,6 +159,7 @@ protected:
 		{
 			cout << "최대가격을 입력하세요>> ";
 			cin >> searchmax;
+			comparedata[2] = searchmax;
 		}
 		cout << "4.출발일 1. Yes  2. No" << endl;
 		cin >> option[3];
@@ -164,13 +167,16 @@ protected:
 		{
 			cout << "출발일을 입력하세요>> ";
 			cin >> searchdate;
+			comparedata[3] = searchdate;
 		}
 		cout << "5.경유 1. Yes  2. No" << endl;
+
 		cin >> option[4];
 		if (option[4] == 1)
 		{
 			cout << "경유를 하실건가요? 0. 아니요 / 1. 예 >> ";
 			cin >> searchvia;
+			comparedata[4] = searchvia;
 		}
 
 		cout << "6.자유일정 1. Yes  2. No" << endl;
@@ -179,15 +185,25 @@ protected:
 		{
 			cout << "자유일정 0. 아니요 / 1. 예 >> ";
 			cin >> searchfree;
+			comparedata[5] = searchfree;
 		}
 		ifstream spack;
 		spack.open("packagelist.txt");
 		fileRead(spack, v);
 		string word;
-		//cout << "enter word to search : ";
-		search(v, searchloc);
+		string searchtotal;
+		for (int i = 0; i < 6; i++)
+		{
+			if (option[i] == 1)
+			{
+				searchtotal = searchtotal + " " + comparedata[i];
+			}
+		}
+		
+		cout << searchtotal << endl;	
+		search(v, searchtotal);
 
-		if (spack.is_open()) //마무리 필요
+		/*if (spack.is_open()) //마무리 필요
 		{
 			pidcount = 0;
 			while (!spack.eof())
@@ -258,12 +274,12 @@ protected:
 						}
 					}
 				//}
-			}*/
+			}
 				spack.close();
 			
+			
 
-
-		}
+		}*/
 	}
 
 	void buyPackage()
