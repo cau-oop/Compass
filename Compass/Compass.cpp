@@ -1,4 +1,4 @@
-//±è°æÅÂ, ÀÌÀÇ¼·, ÇÑ½Â³²
+//ê¹€ê²½íƒœ, ì´ì˜ì„­, í•œìŠ¹ë‚¨
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -11,22 +11,22 @@ int PID;
 class Package
 {
 protected:
-	string searchloc; //°¡°í ½ÍÀº Áö¿ª ÀÔ·Â
-	string searchmin; //ÃÖ¼Ò °¡°İ
-	string searchmax; //ÃÖ´ë °¡°İ
-	string searchdate; //Ãâ¹ßÀÏ
-	int searchvia; //°æÀ¯ À¯¹«
-	string searchfree; //ÀÚÀ¯ÀÏÁ¤ À¯¹«
-	string searchppl; //¿©ÇàÀÎ¿ø
+	string searchloc; //ê°€ê³  ì‹¶ì€ ì§€ì—­ ì…ë ¥
+	string searchmin; //ìµœì†Œ ê°€ê²©
+	string searchmax; //ìµœëŒ€ ê°€ê²©
+	string searchdate; //ì¶œë°œì¼
+	int searchvia; //ê²½ìœ  ìœ ë¬´
+	string searchfree; //ììœ ì¼ì • ìœ ë¬´
+	string searchppl; //ì—¬í–‰ì¸ì›
 	string reviewstr;
 	
 	float rank;
 	int buyer;
 	
 	int reviewbuyer;
-	string Pname[100]; //ÆĞÅ°Áö ÀÌ¸§
-	string location[100]; //Áö¿ª
-	string tag[100]; //ÇØ½ÃÅÂ±×
+	string Pname[100]; //íŒ¨í‚¤ì§€ ì´ë¦„
+	string location[100]; //ì§€ì—­
+	string tag[100]; //í•´ì‹œíƒœê·¸
 	int price[100];
 	int via[100];
 
@@ -42,7 +42,7 @@ protected:
 	{
 
 	}
-	void addPackage() //ÅÂµÎ¸® ¿Ï¼º
+	void addPackage() //íƒœë‘ë¦¬ ì™„ì„±
 	{
 		PID = 0;
 		int offset;
@@ -63,48 +63,48 @@ protected:
 			
 		}
 		else {
-			cout << "ÆÄÀÏÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù!" << endl;
+			cout << "íŒŒì¼ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!" << endl;
 		}
 		
 		cout << "Package ID :" << PID << endl;
-		cout << "ÆĞÅ°Áö ÀÌ¸§: ";
+		cout << "íŒ¨í‚¤ì§€ ì´ë¦„: ";
 		//cin.ignore();
 		getline(cin, Pname[PID]);
-		cout << "Áö¿ª : ";
+		cout << "ì§€ì—­ : ";
 		getline(cin, location[PID]);
-		cout << "ÅÂ±×: ";
+		cout << "íƒœê·¸: ";
 		getline(cin, tag[PID]);
-		cout << "°¡°İ(¿øÈ­): ";
+		cout << "ê°€ê²©(ì›í™”): ";
 		cin >> price[PID];
-		cout << "°æÀ¯ À¯¹« (1. YES 0. NO): ";
+		cout << "ê²½ìœ  ìœ ë¬´ (1. YES 0. NO): ";
 		cin >> via[PID];
-		cout << "¿©Çà Ãâ¹ßÀÏ: ";
+		cout << "ì—¬í–‰ ì¶œë°œì¼: ";
 		cin >> trav_start_date[PID];
-		cout << "¿©Çà Ãâ¹ß ½Ã°£:(½Ã ºĞ) ";
+		cout << "ì—¬í–‰ ì¶œë°œ ì‹œê°„:(ì‹œ ë¶„) ";
 		cin >> trav_start_hour[PID];
-		cout << "¿©Çà±â°£: ";
+		cout << "ì—¬í–‰ê¸°ê°„: ";
 		cin >> how_long_trav[PID];
-		cout << "ÀÚÀ¯¿©Çà (1. YES 0. NO) : ";
+		cout << "ììœ ì—¬í–‰ (1. YES 0. NO) : ";
 		cin >> free_trav[PID];
-		cout << "ÃÖ¼ÒÀÎ¿ø :";
+		cout << "ìµœì†Œì¸ì› :";
 		cin >> minppl[PID];
-		cout << "ÃÖ´ëÀÎ¿ø :";
+		cout << "ìµœëŒ€ì¸ì› :";
 		cin >> maxppl[PID];
 
 		ofstream os;
 		os.open("packagelist.txt", ios::app);
 		os << "PID >>" << PID;
-		os << " || ÆĞÅ°Áö >>" << Pname[PID];
-		os << " || Áö¿ª >>"<<location[PID];
-		os << " || ÅÂ±× >>" << tag[PID];
-		os << " || °¡°İ >>"<<price[PID];
-		os << " || °æÀ¯ >>" << via[PID];
-		os << " || Ãâ¹ßÀÏ >>"<<trav_start_date[PID];
-		os << " || Ãâ¹ß½Ã°£ >>"<<trav_start_hour[PID];
-		os << " || ¿©Çà±â°£ >>"<<how_long_trav[PID];
-		os << " || ÀÚÀ¯¿©Çà >>" << free_trav[PID];
-		os << " || ÃÖ¼ÒÀÎ¿ø >>" << minppl[PID];
-		os << " || ÃÖ´ëÀÎ¿ø >>" << maxppl[PID] << endl;
+		os << " || íŒ¨í‚¤ì§€ >>" << Pname[PID];
+		os << " || ì§€ì—­ >>"<<location[PID];
+		os << " || íƒœê·¸ >>" << tag[PID];
+		os << " || ê°€ê²© >>"<<price[PID];
+		os << " || ê²½ìœ  >>" << via[PID];
+		os << " || ì¶œë°œì¼ >>"<<trav_start_date[PID];
+		os << " || ì¶œë°œì‹œê°„ >>"<<trav_start_hour[PID];
+		os << " || ì—¬í–‰ê¸°ê°„ >>"<<how_long_trav[PID];
+		os << " || ììœ ì—¬í–‰ >>" << free_trav[PID];
+		os << " || ìµœì†Œì¸ì› >>" << minppl[PID];
+		os << " || ìµœëŒ€ì¸ì› >>" << maxppl[PID] << endl;
 
 		os.close();
 	}
@@ -118,7 +118,7 @@ protected:
 		
 	}
 
-	// º¤ÅÍ¿¡¼­ word¸¦ Ã£¾Æ¼­ Ãâ·ÂÇÑ´Ù
+	// ë²¡í„°ì—ì„œ wordë¥¼ ì°¾ì•„ì„œ ì¶œë ¥í•œë‹¤
 	void search(vector<string>& v, string& word)
 	{
 		for (int i = 0; i < v.size(); i++)
@@ -139,61 +139,61 @@ protected:
 		int count = 0;
 		string line;
 
-		cout << "°Ë»ö ¿É¼Ç : " << endl;
-		cout << "1.Áö¿ª 1. Yes  2. No" << endl;
+		cout << "ê²€ìƒ‰ ì˜µì…˜ : " << endl;
+		cout << "1.ì§€ì—­ 1. Yes  2. No" << endl;
 		cin >> option[0];
 		if (option[0] == 1)
 		{
-			cout << "°¡°í ½ÍÀº Áö¿ªÀ» ÀÔ·ÂÇÏ¼¼¿ä>> ";
+			cout << "ê°€ê³  ì‹¶ì€ ì§€ì—­ì„ ì…ë ¥í•˜ì„¸ìš”>> ";
 			cin >> searchloc;
 			comparedata[0] = searchloc;
 		}
-		cout << "2.ÃÖ¼Ò°¡°İ 1. Yes  2. No" << endl;
+		cout << "2.ìµœì†Œê°€ê²© 1. Yes  2. No" << endl;
 		cin >> option[1];
 		if (option[1] == 1)
 		{
-			cout << "ÃÖ¼Ò°¡°İÀ» ÀÔ·ÂÇÏ¼¼¿ä>> ";
+			cout << "ìµœì†Œê°€ê²©ì„ ì…ë ¥í•˜ì„¸ìš”>> ";
 			cin >> searchmin;
 			comparedata[1] = searchmin;
 		}
-		cout << "3.ÃÖ´ë°¡°İ 1. Yes  2. No" << endl;
+		cout << "3.ìµœëŒ€ê°€ê²© 1. Yes  2. No" << endl;
 		cin >> option[2];
 		if (option[2] == 1)
 		{
-			cout << "ÃÖ´ë°¡°İÀ» ÀÔ·ÂÇÏ¼¼¿ä>> ";
+			cout << "ìµœëŒ€ê°€ê²©ì„ ì…ë ¥í•˜ì„¸ìš”>> ";
 			cin >> searchmax;
 			comparedata[2] = searchmax;
 		}
-		cout << "4.Ãâ¹ßÀÏ 1. Yes  2. No" << endl;
+		cout << "4.ì¶œë°œì¼ 1. Yes  2. No" << endl;
 		cin >> option[3];
 		if (option[3] == 1)
 		{
-			cout << "Ãâ¹ßÀÏÀ» ÀÔ·ÂÇÏ¼¼¿ä>> ";
+			cout << "ì¶œë°œì¼ì„ ì…ë ¥í•˜ì„¸ìš”>> ";
 			cin >> searchdate;
 			comparedata[3] = searchdate;
 		}
-		cout << "5.°æÀ¯ 1. Yes  2. No" << endl;
+		cout << "5.ê²½ìœ  1. Yes  2. No" << endl;
 		cin >> option[4];
 		if (option[4] == 1)
 		{
-			cout << "°æÀ¯¸¦ ÇÏ½Ç°Ç°¡¿ä? 0. ¾Æ´Ï¿ä / 1. ¿¹ >> ";
+			cout << "ê²½ìœ ë¥¼ í•˜ì‹¤ê±´ê°€ìš”? 0. ì•„ë‹ˆìš” / 1. ì˜ˆ >> ";
 			cin >> searchvia;
 			comparedata[4] = searchvia;
 		}
 
-		cout << "6.ÀÚÀ¯ÀÏÁ¤ 1. Yes  2. No" << endl;
+		cout << "6.ììœ ì¼ì • 1. Yes  2. No" << endl;
 		cin >> option[5];
 		if (option[5] == 1)
 		{
-			cout << "ÀÚÀ¯ÀÏÁ¤ 0. ¾Æ´Ï¿ä / 1. ¿¹ >> ";
+			cout << "ììœ ì¼ì • 0. ì•„ë‹ˆìš” / 1. ì˜ˆ >> ";
 			cin >> searchfree;
 			comparedata[5] = searchfree;
 		}
-		cout << "7.¿©ÇàÀÎ¿ø 1. Yes  2. No" << endl;
+		cout << "7.ì—¬í–‰ì¸ì› 1. Yes  2. No" << endl;
 		cin >> option[6];
 		if (option[6] == 1)
 		{
-			cout << "¿©ÇàÀÎ¿ø >> ";
+			cout << "ì—¬í–‰ì¸ì› >> ";
 			cin >> searchppl;
 			comparedata[6] = searchppl;
 		}
@@ -207,7 +207,8 @@ protected:
 
 	void buyPackage()
 	{
-		cout << "ÆĞÅ°Áö ±¸¸Å" << endl;
+		cout << "íŒ¨í‚¤ì§€ êµ¬ë§¤" << endl;
+		cout << "êµ¬ë§¤ ë°©ë²• : 1.ì¹´ë“œ\t2.ë¬´í†µì¥ì…ê¸ˆ\t3.Payco\t4.ì¹´ì¹´ì˜¤í˜ì´<<endl;
 
 	}
 	
