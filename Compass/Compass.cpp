@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+#include <iomanip>
 using namespace std;
 
 int PID;
@@ -104,12 +106,31 @@ protected:
 		os.close();
 	}
 
+	void fileRead(ifstream& spack, vector<string>& v)
+	{
+		string line;
+
+		while (getline(spack, line))
+			v.push_back(line);
+	}
+
+	// 벡터에서 word를 찾아서 출력한다
+	void search(vector<string>& v, string& word)
+	{
+		for (int i = 0; i < v.size(); i++)
+		{
+			int index = v[i].find(word);
+			if (index != -1)
+				cout << v[i] << endl;
+		}
+	}
+
 	void searchPackage()
 	{
+		vector<string> v;
 		int option[6] = { 0 };
 		int offset[6] = { 0 };
-		string comparedata[6] = { "0" };
-		int foundpackage[100] = { 0 };
+		string comparedata[6] = { "0","0","0","0","0","0" };
 		int count = 0;
 		int pidcount = 0;
 		string str;
@@ -159,83 +180,86 @@ protected:
 			cout << "자유일정 0. 아니요 / 1. 예 >> ";
 			cin >> searchfree;
 		}
-		ifstream MyFile;
-		MyFile.open("packagelist.txt");
-		if (MyFile.is_open()) //마무리 필요
+		ifstream spack;
+		spack.open("packagelist.txt");
+		fileRead(spack, v);
+		string word;
+		//cout << "enter word to search : ";
+		search(v, searchloc);
+
+		if (spack.is_open()) //마무리 필요
 		{
 			pidcount = 0;
-			while (!MyFile.eof())
+			while (!spack.eof())
 			{
-				getline(MyFile, line);
+				getline(spack, line);
 				if (option[0] == 1)
-				{
+				{	
 					if ((offset[0] = line.find(searchloc, 0)) != string::npos)
 					{
-						comparedata[0] = line;
-						foundpackage[count] = 1;
-						count++;
-					}
+					comparedata[0] = line;
+					count++;
+					}		
 				}
 				if (option[1] == 1)
 				{
-					if ((offset[1] = line.find("가격 >>" + searchmin, 0)) != string::npos)
-					{
-						comparedata[1] = line;
-						foundpackage[count] = 1;
-						count++;
-					}
 
+						if ((offset[1] = line.find("가격 >>" + searchmin, 0)) != string::npos)
+						{
+							comparedata[1] = line;
+							count++;
+						}
 				}
 				if (option[2] == 1)
 				{
 					if ((offset[2] = line.find("가격 >>" + searchmax, 0)) != string::npos)
-					{
-						comparedata[2] = line;
-						foundpackage[count] = 1;
-						count++;
-					}
+						{
+							comparedata[2] = line;
+							count++;
+						}
 				}
 				if (option[3] == 1)
 				{
-					if ((offset[3] = line.find("출발일 >>" + searchdate, 0)) != string::npos)
-					{
-						comparedata[3] = line;
-						foundpackage[count] = 1;
-						count++;
-					}
+						if ((offset[3] = line.find("출발일 >>" + searchdate, 0)) != string::npos)
+						{
+							comparedata[3] = line;
+							count++;
+						}
+						
 				}
 				if (option[4] == 1)
 				{
-					if ((offset[4] = line.find("경유 >>" + searchvia, 0)) != string::npos)
-					{
-						comparedata[4] = line;
-						foundpackage[count] = 1;
-						count++;
-					}
+					
+						if ((offset[4] = line.find("경유 >>" + searchvia, 0)) != string::npos)
+						{
+							comparedata[4] = line;
+							count++;
+						}
 				}
 				if (option[5] == 1)
 				{
-					if ((offset[5] = line.find("자유여행 >>" + searchfree, 0)) != string::npos)
-					{
-						comparedata[5] = line;
-						foundpackage[count] = 1;
-						count++;
-					}
+						if ((offset[5] = line.find("자유여행 >>" + searchfree, 0)) != string::npos)
+						{
+							comparedata[5] = line;
+							count++;
+						}
 				}
-				pidcount++;
 			}
-
-			for (int j = 0; j < 6; j++)
+			
+			/*for (int j = 0; j < 6; j++)
 			{
-				for (int i = 0; i < 6; i++)
-				{
-					if ((comparedata[j] != "0") && (comparedata[j].compare(comparedata[i]) == 0))
+				//for (int i = 0; i < 6; i++)
+				//{
+					for (int k = 0; k < 100; k++)
 					{
-						cout << line << endl;
+						if ((comparedata[j][k] != "0") && (comparedata[j][k].compare(comparedata[i][k]) == 0))
+						{
+							cout << comparedata[j][k] << endl;
+						}
 					}
-				}
-			}
-				MyFile.close();
+				//}
+			}*/
+				spack.close();
 			
 
 
