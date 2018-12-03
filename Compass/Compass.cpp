@@ -17,6 +17,7 @@ protected:
 	string searchdate; //출발일
 	int searchvia; //경유 유무
 	string searchfree; //자유일정 유무
+	string searchppl; //여행인원
 	string reviewstr;
 	
 	float rank;
@@ -93,15 +94,17 @@ protected:
 		ofstream os;
 		os.open("packagelist.txt", ios::app);
 		os << "PID >>" << PID;
-		os << "패키지 >>" << Pname[PID];
-		os << "지역 >>"<<location[PID];
-		os << "태그 >>" << tag[PID];
-		os << "가격 >>"<<price[PID];
-		os << "경유 >>" << via[PID];
-		os << "출발일 >>"<<trav_start_date[PID];
-		os << "출발시간 >>"<<trav_start_hour[PID];
-		os << "여행기간 >>"<<how_long_trav[PID];
-		os << "자유여행 >>" << free_trav[PID] << endl;;
+		os << " || 패키지 >>" << Pname[PID];
+		os << " || 지역 >>"<<location[PID];
+		os << " || 태그 >>" << tag[PID];
+		os << " || 가격 >>"<<price[PID];
+		os << " || 경유 >>" << via[PID];
+		os << " || 출발일 >>"<<trav_start_date[PID];
+		os << " || 출발시간 >>"<<trav_start_hour[PID];
+		os << " || 여행기간 >>"<<how_long_trav[PID];
+		os << " || 자유여행 >>" << free_trav[PID];
+		os << " || 최소인원 >>" << minppl[PID];
+		os << " || 최대인원 >>" << maxppl[PID] << endl;
 
 		os.close();
 	}
@@ -112,28 +115,28 @@ protected:
 
 		while (getline(spack, line))
 			v.push_back(line);
+		
 	}
 
 	// 벡터에서 word를 찾아서 출력한다
-	void search(vector<string>& v, vector<string>& word)
+	void search(vector<string>& v, string& word)
 	{
 		for (int i = 0; i < v.size(); i++)
 		{
-			int index = v[i].find(word[i]);
-			if (index != -1)
-				cout << v[i] << endl;
+				int index = v[i].find(word);
+				if (index != -1)
+					cout << v[i] << endl;
+			
 		}
 	}
 
 	void searchPackage()
 	{
 		vector<string> v;
-		int option[6] = { 0 };
-		int offset[6] = { 0 };
-		string comparedata[6] = { 0, };
+		int option[7] = { 0 };
+		int offset[7] = { 0 };
+		string comparedata[7] = { 0 };
 		int count = 0;
-		int pidcount = 0;
-		string str;
 		string line;
 
 		cout << "검색 옵션 : " << endl;
@@ -170,7 +173,6 @@ protected:
 			comparedata[3] = searchdate;
 		}
 		cout << "5.경유 1. Yes  2. No" << endl;
-
 		cin >> option[4];
 		if (option[4] == 1)
 		{
@@ -187,97 +189,20 @@ protected:
 			cin >> searchfree;
 			comparedata[5] = searchfree;
 		}
+		cout << "7.여행인원 1. Yes  2. No" << endl;
+		cin >> option[6];
+		if (option[6] == 1)
+		{
+			cout << "여행인원 >> ";
+			cin >> searchppl;
+			comparedata[6] = searchppl;
+		}
 		ifstream spack;
 		spack.open("packagelist.txt");
 		fileRead(spack, v);
-		string word;
-		vector<string> searchtotal;
-		for (int i = 0; i < 6; i++)
-		{
-			if (option[i] == 1)
-			{
-				searchtotal.push_back(comparedata[i]);
-			}
-		}	
-		search(v, searchtotal);
+		search(v, searchloc);
+		spack.close();
 
-		/*if (spack.is_open()) //마무리 필요
-		{
-			pidcount = 0;
-			while (!spack.eof())
-			{
-				getline(spack, line);
-				if (option[0] == 1)
-				{	
-					if ((offset[0] = line.find(searchloc, 0)) != string::npos)
-					{
-					comparedata[0] = line;
-					count++;
-					}		
-				}
-				if (option[1] == 1)
-				{
-
-						if ((offset[1] = line.find("가격 >>" + searchmin, 0)) != string::npos)
-						{
-							comparedata[1] = line;
-							count++;
-						}
-				}
-				if (option[2] == 1)
-				{
-					if ((offset[2] = line.find("가격 >>" + searchmax, 0)) != string::npos)
-						{
-							comparedata[2] = line;
-							count++;
-						}
-				}
-				if (option[3] == 1)
-				{
-						if ((offset[3] = line.find("출발일 >>" + searchdate, 0)) != string::npos)
-						{
-							comparedata[3] = line;
-							count++;
-						}
-						
-				}
-				if (option[4] == 1)
-				{
-					
-						if ((offset[4] = line.find("경유 >>" + searchvia, 0)) != string::npos)
-						{
-							comparedata[4] = line;
-							count++;
-						}
-				}
-				if (option[5] == 1)
-				{
-						if ((offset[5] = line.find("자유여행 >>" + searchfree, 0)) != string::npos)
-						{
-							comparedata[5] = line;
-							count++;
-						}
-				}
-			}
-			
-			/*for (int j = 0; j < 6; j++)
-			{
-				//for (int i = 0; i < 6; i++)
-				//{
-					for (int k = 0; k < 100; k++)
-					{
-						if ((comparedata[j][k] != "0") && (comparedata[j][k].compare(comparedata[i][k]) == 0))
-						{
-							cout << comparedata[j][k] << endl;
-						}
-					}
-				//}
-			}
-				spack.close();
-			
-			
-
-		}*/
 	}
 
 	void buyPackage()
