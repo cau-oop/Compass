@@ -13,23 +13,21 @@
 
 
 using namespace std;
-string str_arr[1000];
-string str_arr2[100];
 
-char *str_buff = new char[1000];
-int str_cnt = 0;
+
+
 int PID = 0;
 
 class Package
 {
 protected:
 	string searchloc; //가고 싶은 지역 입력
-	int searchmin; //최소 가격
-	int searchmax; //최대 가격
+	int searchmin=0; //최소 가격
+	int searchmax=0; //최대 가격
 	string searchdate; //출발일
 	string searchvia; //경유 유무
 	string searchfree; //자유일정 유무
-	int searchppl; //여행인원
+	int searchppl=0; //여행인원
 	string reviewstr;
 
 	float rank;
@@ -130,35 +128,12 @@ public:
 
 	}
 
-	// 벡터에서 word를 찾아서 출력한다
-	void search(vector<string>& v, string& word)
-	{
-
-		for (int i = 0; i < v.size(); i++)
-		{
-			int index = v[i].find(word);
-			if (index != -1)
-			{
-				strcpy(str_buff, v[i].c_str());
-			}
-		}
-	}
-
 	void searchPackage()
 	{
 		vector<string> v;
-		vector<string> printlocation;
-		vector<string> printpricemin;
-		vector<string> printpricemax;
-		vector<string> printdate;
-		vector<string> printvia;
-		vector<string> printfree;
-		vector<string> printppl;
 		int option[7] = { 0 };
-		int offset[7] = { 0 };
 		string comparedata[7];
-		int count = 0;
-		string line;
+		int findpackagecount = 0;
 
 		cout << "검색 옵션 : " << endl;
 		cout << "1.지역 1. Yes  2. No" << endl;
@@ -218,14 +193,24 @@ public:
 			cin >> searchppl;
 			comparedata[6] = "인원 >>";
 		}
-		array<string, 7> compareoption;
+
 		ifstream spack;
 		spack.open("packagelist.txt");
 		fileRead(spack, v);
 		for (int i = 0; i < v.size(); i++)
 		{
+			char *str_buff = new char[1000];
+			char *str_buff2 = new char[1000];
 			int findloc = 0, findmin = 0, findmax = 0, finddate = 0, findvia = 0, findfree = 0, findppl = 0;
 			int pricetrue = 0, ppltrue = 0;
+			int str_cnt = 0;
+			char *tok = NULL;
+			char *tok2 = NULL;
+			char *tok3 = NULL;
+			char *tok4 = NULL;
+			string str_arr[1000];
+			string str_arr2[100];
+			
 			if (option[0] == 1)
 				findloc = v[i].find(comparedata[0]);
 			if (option[1] == 1 || option[2] == 1)
@@ -236,7 +221,7 @@ public:
 				if ((findmin != -1) || (findmax != -1))
 				{
 					strcpy(str_buff, v[i].c_str());
-					char *tok = strtok(str_buff, "||");
+					tok = strtok(str_buff, "||");
 					while (tok != nullptr)
 					{
 						str_arr[str_cnt++] = string(tok);
@@ -245,11 +230,10 @@ public:
 
 					char *comp = new char[1000];
 					strcpy(comp, str_arr[4].c_str());
-					char *tok2 = strtok(comp, ">>");
+					tok2 = strtok(comp, ">>");
 					str_arr2[0] = string(tok2);
 					tok2 = strtok(nullptr, ">>"); //가격 저장
 					int convertstr = atoi(tok2);
-					cout << convertstr << endl;
 					if (option[1] == 1)
 					{
 						if (option[2] == 1)
@@ -275,6 +259,7 @@ public:
 							pricetrue = 1;
 						}
 					}
+					free(comp);
 				}
 			}
 			if (option[3] == 1)
@@ -285,27 +270,28 @@ public:
 				findfree = v[i].find(comparedata[5]);
 			if (option[6] == 1)
 			{
+				tok = NULL;
 				findppl = v[i].find(comparedata[6]);
 				if (findppl != -1)
 				{
-					strcpy(str_buff, v[i].c_str());
+					strcpy(str_buff2, v[i].c_str());
 					str_cnt = 0;
-					char *tok = strtok(str_buff, "||");
+					tok = strtok(str_buff2, "||");
 					while (tok != nullptr)
 					{
 						str_arr[str_cnt++] = string(tok);
 						tok = strtok(nullptr, "||");
 					}
 
-					char *comp = new char[1000];
-					strcpy(comp, str_arr[10].c_str());
-					char *tok3 = strtok(comp, ">>");
+					char *comp2 = new char[1000];
+					strcpy(comp2, str_arr[10].c_str());
+					tok3 = strtok(comp2, ">>");
 					str_arr2[0] = string(tok3);
 					tok3 = strtok(nullptr, ">>"); //최소인원 저장
 					int convertpplmin = atoi(tok3); //int 변환
 
-					strcpy(comp, str_arr[11].c_str());
-					char *tok4 = strtok(comp, ">>");
+					strcpy(comp2, str_arr[11].c_str());
+					tok4 = strtok(comp2, ">>");
 					str_arr2[0] = string(tok4);
 					tok4 = strtok(nullptr, ">>"); //최대인원 저장
 					int convertpplmax = atoi(tok4); //int 변환
@@ -314,6 +300,7 @@ public:
 					{
 						ppltrue = 1;
 					}
+					free(comp2);
 				}
 			}
 			if ((findloc != -1) && (findmin != -1) && (findmax != -1) && (finddate != -1) && (findvia != -1) && (findfree != -1) && (findppl != -1))
@@ -323,201 +310,46 @@ public:
 					if (option[6] == 1)
 					{
 						if (ppltrue == 1 && pricetrue == 1)
+						{
 							cout << v[i] << endl;
-						else
-							cout << "맞는 패키지를 찾을 수 없습니다" << endl;
-
+							findpackagecount++;
+						}
 					}
 					else 
 					{
 						if (pricetrue == 1)
+						{
 							cout << v[i] << endl;
-						else
-							cout << "맞는 패키지를 찾을 수 없습니다" << endl;
+							findpackagecount++;
+						}
 
 					}
 				}
 				else if (option[6] == 1)
 				{
 					if (ppltrue == 1)
+					{
 						cout << v[i] << endl;
-					else
-						cout << "맞는 패키지를 찾을 수 없습니다" << endl;
-
+						findpackagecount++;
+					}
 
 				}
 				else
 				{
 					cout << v[i] << endl;
-					cout << "아무 조건 없음" << endl;
+					findpackagecount++;
 				}
 
 			}
-			else
-			{
-				cout << "맞는 패키지를 찾을 수 없습니다" << endl;
-			}
+			
+
+			free(str_buff);
+			free(str_buff2);
 		}
+		if (findpackagecount == 0)
+			cout << "검색하신 조건에 맞는 패키지를 찾지 못했습니다" << endl;
 
-		/*if (option[0] == 1)
-		{
-			str_cnt = 0;
-			for (int i = 0; i < v.size(); i++)
-			{
-				int index = v[i].find(searchloc);
-				if (index != -1)
-				{
-					printlocation.push_back(v[i]);
-				}
-			}
-
-		}
-		if (option[1] == 1 || option[2] == 1)
-		{
-			for (int i = 0; i < v.size(); i++)
-			{
-				int index = v[i].find(comparedata[1]);
-				if (index != -1)
-				{
-					strcpy(str_buff, v[i].c_str());
-					char *tok = strtok(str_buff, "||");
-					while (tok != nullptr)
-					{
-						str_arr[str_cnt++] = string(tok);
-						tok = strtok(nullptr, "||");
-					}
-
-					char *comp = new char[1000];
-					strcpy(comp, str_arr[4].c_str());
-					cout << comp << endl;
-					char *tok2 = strtok(comp, ">>");
-					cout << tok2 << endl;
-					str_arr2[0] = string(tok2);
-					tok2 = strtok(nullptr, ">>"); //가격 저장
-					int convertstr = atoi(tok2);
-					if (option[1] == 1)
-					{
-						if (option[2] == 1)
-						{
-							if (convertstr >= searchmin && convertstr <= searchmax)
-							{
-								printpricemin.push_back(v[i]);
-								printpricemax.push_back(v[i]);
-								for (int n = 0; n < str_cnt; n++)
-								{
-									cout << str_arr[n] << endl;
-								}
-							}
-						}
-						else
-						{
-							if (convertstr >= searchmin)
-							{
-								printpricemin.push_back(v[i]);
-								for (int n = 0; n < str_cnt; n++)
-								{
-									cout << str_arr[n] << endl;
-								}
-							}
-						}
-
-					}
-					else if (option[2] == 1)
-					{
-						if (convertstr <= searchmin)
-						{
-							printpricemax.push_back(v[i]);
-							for (int n = 0; n < str_cnt; n++)
-							{
-								cout << str_arr[n] << endl;
-							}
-						}
-					}
-				}
-			}
-			str_cnt = 0;
-
-
-
-
-		}
-		if (option[3] == 1)
-		{
-			search(v, searchdate);
-			for (int i = 0; i < v.size(); i++)
-			{
-				int index = v[i].find(searchdate);
-				if (index != -1)
-				{
-					printdate.push_back(v[i]);
-				}
-			}
-		}
-		if (option[4] == 1)
-		{
-			for (int i = 0; i < v.size(); i++)
-			{
-				int index = v[i].find(comparedata[4]);
-				if (index != -1)
-				{
-					printvia.push_back(v[i]);
-				}
-			}
-		}
-		if (option[5] == 1)
-		{
-			for (int i = 0; i < v.size(); i++)
-			{
-				int index = v[i].find(comparedata[5]);
-				if (index != -1)
-				{
-					printfree.push_back(v[i]);
-				}
-			}
-		}
-
-		if (option[6] == 1)
-		{
-			search(v, comparedata[6]);
-			for (int i = 0; i < v.size(); i++)
-			{
-				int index = v[i].find(comparedata[6]);
-				if (index != -1)
-				{
-					strcpy(str_buff, v[i].c_str());
-					str_cnt = 0;
-					char *tok = strtok(str_buff, "||");
-					while (tok != nullptr)
-					{
-						str_arr[str_cnt++] = string(tok);
-						tok = strtok(nullptr, "||");
-					}
-
-					char *comp = new char[1000];
-					strcpy(comp, str_arr[10].c_str());
-					char *tok3 = strtok(comp, ">>");
-					str_arr2[0] = string(tok3);
-					tok3 = strtok(nullptr, ">>"); //최소인원 저장
-					int convertpplmin = atoi(tok3); //int 변환
-
-					strcpy(comp, str_arr[11].c_str());
-					char *tok4 = strtok(comp, ">>");
-					str_arr2[0] = string(tok4);
-					tok4 = strtok(nullptr, ">>"); //최대인원 저장
-					int convertpplmax = atoi(tok4); //int 변환
-
-					if (convertpplmin <= searchppl && convertpplmax >= searchppl)
-					{
-						for (int n = 0; n < str_cnt; n++)
-						{
-							printppl.push_back(v[i]);
-						}
-					}
-
-				}
-			}
-
-		}*/
+		
 
 		spack.close();
 
