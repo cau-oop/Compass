@@ -15,7 +15,7 @@ protected:
 	string searchmin; //최소 가격
 	string searchmax; //최대 가격
 	string searchdate; //출발일
-	int searchvia; //경유 유무
+	string searchvia; //경유 유무
 	string searchfree; //자유일정 유무
 	string searchppl; //여행인원
 	string reviewstr;
@@ -178,7 +178,7 @@ public:
 		{
 			cout << "경유를 하실건가요? 0. 아니요 / 1. 예 >> ";
 			cin >> searchvia;
-			comparedata[4] = searchvia;
+			comparedata[4] = "경유 >>" + searchvia;
 		}
 
 		cout << "6.자유일정 1. Yes  2. No" << endl;
@@ -187,7 +187,7 @@ public:
 		{
 			cout << "자유일정 0. 아니요 / 1. 예 >> ";
 			cin >> searchfree;
-			comparedata[5] = searchfree;
+			comparedata[5] = "자유여행 >>" + searchfree;
 		}
 		cout << "7.여행인원 1. Yes  2. No" << endl;
 		cin >> option[6];
@@ -197,10 +197,24 @@ public:
 			cin >> searchppl;
 			comparedata[6] = searchppl;
 		}
+
+		int ppl[5];
 		ifstream spack;
 		spack.open("packagelist.txt");
+		spack >> ppl[0];
+		spack >> ppl[1];
+		cout << ppl[0] << endl;
+		cout << ppl[1] << endl;
+		/*
 		fileRead(spack, v);
 		search(v, searchloc);
+		search(v, searchmin);
+		search(v, searchmax);
+		search(v, searchdate);
+		search(v, comparedata[5);
+		search(v, comparedata[4]);
+		search(v, searchppl);
+		*/
 		spack.close();
 
 	}
