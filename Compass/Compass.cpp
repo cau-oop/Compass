@@ -134,6 +134,9 @@ public:
 		int option[7] = { 0 };
 		string comparedata[7];
 		int findpackagecount = 0;
+		int buypacknumber=0; //상품번호
+		int buynum; //입력받을 상품번호
+		int condition[100] = { 0, };
 
 		cout << "검색 옵션 : " << endl;
 		cout << "1.지역 1. Yes  2. No" << endl;
@@ -311,16 +314,20 @@ public:
 					{
 						if (ppltrue == 1 && pricetrue == 1)
 						{
-							cout << v[i] << endl;
+							cout << "상품 : "<< buypacknumber << "-> "<< v[i] << endl;
 							findpackagecount++;
+							buypacknumber++;
+							condition[i] = 1;
 						}
 					}
 					else 
 					{
 						if (pricetrue == 1)
 						{
-							cout << v[i] << endl;
+							cout << "상품 : " << buypacknumber << "-> " << v[i] << endl;
 							findpackagecount++;
+							buypacknumber++;
+							condition[i] = 1;
 						}
 
 					}
@@ -329,17 +336,23 @@ public:
 				{
 					if (ppltrue == 1)
 					{
-						cout << v[i] << endl;
+						cout << "상품 : " << buypacknumber << "-> " << v[i] << endl;
 						findpackagecount++;
+						buypacknumber++;
+						condition[i] = 1;
+
 					}
 
 				}
 				else
 				{
-					cout << v[i] << endl;
+					cout << "상품 : " << buypacknumber << "-> " << v[i] << endl;
 					findpackagecount++;
-				}
+					buypacknumber++;
+					condition[i] = 1;
 
+				}
+		
 			}
 			
 
@@ -348,18 +361,38 @@ public:
 		}
 		if (findpackagecount == 0)
 			cout << "검색하신 조건에 맞는 패키지를 찾지 못했습니다" << endl;
+		else
+		{
+			cout << "\n구매 하실 패키지 상품번호를 입력해주세요 >>";
+			cin >> buynum;
+			if (condition[buynum] == 1)
+			{
+				cout << "\n\n" << v[buynum] << endl;
+				buyPackage();
+			}
+			else
+			{
+				cout << "잘못 입력하셨습니다" << endl;
+			}
+
+
+		}
+
+		spack.close();
 
 		
 
-		spack.close();
 
 	}
 
 
 	void buyPackage()
 	{
+		int paymentopt;
 		cout << "패키지 구매" << endl;
 		cout << "구매 방법 : 1.카드\t2.무통장입금\t3.Payco\t4.카카오페이" << endl;
+		cin >> paymentopt;
+
 	}
 
 };
