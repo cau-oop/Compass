@@ -403,9 +403,11 @@ class Advertise : public User, public Package
 	void advertisement()
 	{
 		int ad;
-		Package pack
-		string name = User::getName() //이렇게 
-		ad = rand() % v.size();
+		Package pack;
+		string uname = User::getName(); //이렇게 
+		string country = User::getCount();
+		
+		ad = rand() % pack.v.size();
 		cout << pack.v[ad] <<endl;
 		
 	}
