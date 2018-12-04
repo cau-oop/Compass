@@ -1,5 +1,6 @@
 //김경태, 이의섭, 한승남
 #define _CRT_SECURE_NO_WARNINGS
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -7,6 +8,9 @@
 #include <cstring>
 #include <array>
 #include <iomanip>
+
+#define MAX_STR_LEN 4000
+
 
 using namespace std;
 string str_arr[1000];
@@ -62,7 +66,7 @@ public:
 			while (!FileCheck.eof()) {
 				search = "PID >>" + to_string(PID);
 				getline(FileCheck, s);
-				if ((offset = s.find(search, 0)) != string::npos)
+				if ((offset == s.find(search, 0)) != string::npos)
 				{
 					PID++;
 				}
@@ -220,15 +224,16 @@ public:
 		fileRead(spack, v);
 		for (int i = 0; i < v.size(); i++)
 		{
-			int findloc = 0, findmin = 0, findmax = 0, finddate = 0,findvia= 0, findfree = 0, findppl = 0;
-			if(option[0] ==1)
-			 findloc = v[i].find(comparedata[0]);
+			int findloc = 0, findmin = 0, findmax = 0, finddate = 0, findvia = 0, findfree = 0, findppl = 0;
+			int pricetrue = 0, ppltrue = 0;
+			if (option[0] == 1)
+				findloc = v[i].find(comparedata[0]);
 			if (option[1] == 1 || option[2] == 1)
 			{
 				findmin = v[i].find(comparedata[1]);
-
 				findmax = v[i].find(comparedata[2]);
-				if ((findmin != -1)||(findmax!=-1))
+
+				if ((findmin != -1) || (findmax != -1))
 				{
 					strcpy(str_buff, v[i].c_str());
 					char *tok = strtok(str_buff, "||");
@@ -240,63 +245,117 @@ public:
 
 					char *comp = new char[1000];
 					strcpy(comp, str_arr[4].c_str());
-					cout << comp << endl;
 					char *tok2 = strtok(comp, ">>");
-					cout << tok2 << endl;
 					str_arr2[0] = string(tok2);
 					tok2 = strtok(nullptr, ">>"); //가격 저장
 					int convertstr = atoi(tok2);
+					cout << convertstr << endl;
 					if (option[1] == 1)
 					{
 						if (option[2] == 1)
 						{
 							if (convertstr >= searchmin && convertstr <= searchmax)
 							{
-								printpricemin.push_back(v[i]);
-								printpricemax.push_back(v[i]);
-								for (int n = 0; n < str_cnt; n++)
-								{
-									cout << str_arr[n] << endl;
-								}
+								pricetrue = 1;
 							}
 						}
 						else
 						{
 							if (convertstr >= searchmin)
 							{
-								printpricemin.push_back(v[i]);
-								for (int n = 0; n < str_cnt; n++)
-								{
-
-								}
+								pricetrue = 1;
 							}
 						}
 
 					}
 					else if (option[2] == 1)
 					{
-						if (convertstr <= searchmin)
+						if (convertstr <= searchmax)
 						{
-							printpricemax.push_back(v[i]);
-							for (int n = 0; n < str_cnt; n++)
-							{
-								cout << str_arr[n] << endl;
-							}
+							pricetrue = 1;
 						}
 					}
 				}
 			}
-			if(option[3]==1)
-			 finddate = v[i].find(comparedata[3]);
-			if(option[4]==1)
-			 findvia = v[i].find(comparedata[4]);
-			if(option[5]==1)
-			 findfree = v[i].find(comparedata[5]);
+			if (option[3] == 1)
+				finddate = v[i].find(comparedata[3]);
+			if (option[4] == 1)
+				findvia = v[i].find(comparedata[4]);
+			if (option[5] == 1)
+				findfree = v[i].find(comparedata[5]);
 			if (option[6] == 1)
-				findppl = v[i].find(comparedata[6]);
-			if ((findloc != -1)&&(findmin !=-1)&&(findmax!=-1)&&(finddate!=-1) && (findvia != -1) && (findfree != -1) && (findppl != -1))
 			{
-				cout << v[i] << endl;
+				findppl = v[i].find(comparedata[6]);
+				if (findppl != -1)
+				{
+					strcpy(str_buff, v[i].c_str());
+					str_cnt = 0;
+					char *tok = strtok(str_buff, "||");
+					while (tok != nullptr)
+					{
+						str_arr[str_cnt++] = string(tok);
+						tok = strtok(nullptr, "||");
+					}
+
+					char *comp = new char[1000];
+					strcpy(comp, str_arr[10].c_str());
+					char *tok3 = strtok(comp, ">>");
+					str_arr2[0] = string(tok3);
+					tok3 = strtok(nullptr, ">>"); //최소인원 저장
+					int convertpplmin = atoi(tok3); //int 변환
+
+					strcpy(comp, str_arr[11].c_str());
+					char *tok4 = strtok(comp, ">>");
+					str_arr2[0] = string(tok4);
+					tok4 = strtok(nullptr, ">>"); //최대인원 저장
+					int convertpplmax = atoi(tok4); //int 변환
+
+					if (convertpplmin <= searchppl && convertpplmax >= searchppl)
+					{
+						ppltrue = 1;
+					}
+				}
+			}
+			if ((findloc != -1) && (findmin != -1) && (findmax != -1) && (finddate != -1) && (findvia != -1) && (findfree != -1) && (findppl != -1))
+			{
+				if (option[1] == 1 || option[2] == 1)
+				{
+					if (option[6] == 1)
+					{
+						if (ppltrue == 1 && pricetrue == 1)
+							cout << v[i] << endl;
+						else
+							cout << "맞는 패키지를 찾을 수 없습니다" << endl;
+
+					}
+					else 
+					{
+						if (pricetrue == 1)
+							cout << v[i] << endl;
+						else
+							cout << "맞는 패키지를 찾을 수 없습니다" << endl;
+
+					}
+				}
+				else if (option[6] == 1)
+				{
+					if (ppltrue == 1)
+						cout << v[i] << endl;
+					else
+						cout << "맞는 패키지를 찾을 수 없습니다" << endl;
+
+
+				}
+				else
+				{
+					cout << v[i] << endl;
+					cout << "아무 조건 없음" << endl;
+				}
+
+			}
+			else
+			{
+				cout << "맞는 패키지를 찾을 수 없습니다" << endl;
 			}
 		}
 
@@ -311,7 +370,7 @@ public:
 					printlocation.push_back(v[i]);
 				}
 			}
-			
+
 		}
 		if (option[1] == 1 || option[2] == 1)
 		{
@@ -367,7 +426,7 @@ public:
 					{
 						if (convertstr <= searchmin)
 						{
-							printpricemax.push_back(v[i]);	
+							printpricemax.push_back(v[i]);
 							for (int n = 0; n < str_cnt; n++)
 							{
 								cout << str_arr[n] << endl;
@@ -377,8 +436,8 @@ public:
 				}
 			}
 			str_cnt = 0;
-			
-			
+
+
 
 
 		}
@@ -457,28 +516,13 @@ public:
 
 				}
 			}
-		
-		}*/
-		cout << "조건 1 충족 :" << endl;
-		for (int i = 0; i < printlocation.size(); i++)
-			cout << printlocation[i]<<endl;
-		for (int i = 0; i < 7; i++)
-		{
-			for (int j = 0; j < 7; j++)
-			{
-				if (j < i)
-				{}
-				else
-				{
-					compareoption[i] == compareoption[j];
-				}
-			}
 
-		}
+		}*/
 
 		spack.close();
 
 	}
+
 
 	void buyPackage()
 	{
