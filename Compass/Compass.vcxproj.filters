@@ -26,6 +26,9 @@
     <ClInclude Include="WorkFlow_Greeter.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="obectClassFile.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Advertise.h">
