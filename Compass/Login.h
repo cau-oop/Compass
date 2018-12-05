@@ -1,4 +1,4 @@
-/*#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include<cstring>
 #include<string>
@@ -65,7 +65,7 @@ public:
 
 
 		// 회원가입 창과 회원가입 메뉴(옵션).
-		cout << "\/\/\/ Join Membership \/\/\/" << endl;
+		cout << "/// Join Membership ///" << endl;
 
 		cout << "1 : General Member\n" << endl;
 		cout << "2 : One-man Travel Agency\n" << endl;
@@ -757,4 +757,4 @@ public:
 	}
 
 
-};*/
+};

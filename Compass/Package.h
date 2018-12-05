@@ -54,7 +54,7 @@ public:
 	}
 	void addPackage() //태두리 완성
 	{
-		PID=-1;
+		PID=0;
 		int offset=0;
 		string search;
 		ifstream FileCheck("packagelist.txt");
@@ -204,7 +204,7 @@ public:
 		{
 			char *str_buff = new char[1000];
 			char *str_buff2 = new char[1000];
-			int findloc = 0, findmin = 0, findmax = 0, finddate = 0, findvia = 0, findfree = 0, findppl = 0;
+			size_t findloc = 0, findmin = 0, findmax = 0, finddate = 0, findvia = 0, findfree = 0, findppl = 0;
 			int pricetrue = 0, ppltrue = 0;
 			int str_cnt = 0;
 			char *tok = NULL;
