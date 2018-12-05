@@ -30,7 +30,7 @@ public:
 	int searchppl = 0; //여행인원
 	string reviewstr;
 	vector<string> v; //패키지 찾아서 출력용
-
+	string filename;
 	float rank;
 	int buyer;
 
@@ -120,9 +120,12 @@ public:
 		os << " || 최대인원 >> " << maxppl[PID] << endl;
 
 		os.close();
-		ofstream newfile;
-		newfile.open(PID + ".rank");
-		newfile << "0 0";
+
+		filename = to_string(PID) + ".rank.txt";
+		ifstream newfile(filename.c_str(), ios::out);	
+		ofstream nf(filename, ios::app);
+		nf << "0 0";
+		nf.close();
 	}
 
 	void fileRead(ifstream& spack, vector<string>& v)

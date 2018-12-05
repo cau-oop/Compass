@@ -35,10 +35,8 @@ public:
 			numLines++;
 		}
 		numLines--;
-		cout << numLines << endl;
-		random = rand() % numLines;
-		cout << random << endl;
 		AD.close();
+		random = rand() % numLines;
 		ifstream printAD("packagelist.txt");
 		while (getline(printAD, adline))
 		{
