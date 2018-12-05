@@ -35,9 +35,9 @@ private:
 	static FILE * reader_UserInfo;
 
 public:
-	LoginSystem(char * input_ID) {
-		currentLogID = (char*)malloc((ID_MAX_LENGTH + 1) * sizeof(char));
-		currentLogID = input_ID;
+
+	char * getCurrentID() {
+		return currentLogID;
 	}
 
 	static void createMember() {
@@ -213,8 +213,8 @@ public:
 
 				//로그인 성공 시 현재 로그인 중인 아이디 및 user type(일반회원인지, 여행사인지 가이드인지) 저장.
 				if (isSuccess) {
-					currentLogID = (char *)malloc(sizeof(char)*ID_MAX_LENGTH);  // 로그아웃 시 동적 할당 free해줘야.
-					currentUserType = (char *)malloc(sizeof(char)*MAX_USER_TYPE_LENGTH);
+					currentLogID = (char *)malloc(sizeof(char)*(ID_MAX_LENGTH+1));  // 로그아웃 시 동적 할당 free해줘야.
+					currentUserType = (char *)malloc(sizeof(char)*(MAX_USER_TYPE_LENGTH+1));
 						
 					strcpy(currentLogID, inputID);
 					strcpy(currentUserType, "general member");
@@ -251,8 +251,8 @@ public:
 
 				//로그인 성공 시 현재 로그인 중인 아이디 및 user type(일반회원인지, 여행사인지 가이드인지) 저장.
 				if (isSuccess) {
-					currentLogID = (char *)malloc(sizeof(char)*ID_MAX_LENGTH);  // 로그아웃 시 동적 할당 free해줘야.
-					currentUserType = (char *)malloc(sizeof(char)*MAX_USER_TYPE_LENGTH);
+					currentLogID = (char *)malloc(sizeof(char)*(ID_MAX_LENGTH+1));  // 로그아웃 시 동적 할당 free해줘야.
+					currentUserType = (char *)malloc(sizeof(char)*(MAX_USER_TYPE_LENGTH+1));
 	
 					strcpy(currentLogID, inputID);
 					strcpy(currentUserType, "one-man travel agency"); 
@@ -289,8 +289,8 @@ public:
 
 				//로그인 성공 시 현재 로그인 중인 아이디 및 user type(일반회원인지, 여행사인지 가이드인지) 저장.
 				if (isSuccess) {
-					currentLogID = (char *)malloc(sizeof(char)*ID_MAX_LENGTH);  // 로그아웃 시 동적 할당 free해줘야.
-					currentUserType = (char *)malloc(sizeof(char)*MAX_USER_TYPE_LENGTH);
+					currentLogID = (char *)malloc(sizeof(char)*(ID_MAX_LENGTH+1));  // 로그아웃 시 동적 할당 free해줘야.
+					currentUserType = (char *)malloc(sizeof(char)*(MAX_USER_TYPE_LENGTH+1));
 		
 					strcpy(currentLogID, inputID);
 					strcpy(currentUserType, "guide");
@@ -300,6 +300,8 @@ public:
 			default:
 				exit(0);
 		}
+
+	
 
 	}
 

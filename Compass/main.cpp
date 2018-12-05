@@ -22,6 +22,9 @@ int main()
 	Package p;
 	User user;
 //	p.addPackage();
+	user.GetInfo();
+	user.ChangeInfo();
+
 	//user.PackReview();
 	srand(time(NULL));
 	Advertise ad;
