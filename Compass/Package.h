@@ -29,6 +29,7 @@ public:
 	string searchfree; //자유일정 유무
 	int searchppl = 0; //여행인원
 	string reviewstr;
+	vector<string> v; //패키지 찾아서 출력용
 
 	float rank;
 	int buyer;
@@ -132,7 +133,6 @@ public:
 
 	void searchPackage()
 	{
-		vector<string> v;
 		int option[7] = { 0 };
 		string comparedata[7];
 		int findpackagecount = 0;

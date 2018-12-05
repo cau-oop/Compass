@@ -22,6 +22,8 @@ int main()
 	Package p;
 	User user;
 //	p.addPackage();
-	user.PackReview();
-
+	//user.PackReview();
+	srand(time(NULL));
+	Advertise ad;
+	ad.advertisement_xmemeber();
 }
