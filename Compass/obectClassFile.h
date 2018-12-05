@@ -52,7 +52,7 @@ public:
 	void PackRank()
 	{
 		double rankBefore, rankAfter;
-		int num, k;
+		int num;
 		char packname[50];
 		cout << "패키지 번호를 입력해주세요" << endl;
 		cin >> packname;
