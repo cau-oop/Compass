@@ -118,7 +118,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Compass.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Login.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="WorkFlow_Greeter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Advertise.h" />
