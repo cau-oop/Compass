@@ -28,7 +28,7 @@ private:
 public:
 	User()
 	{
-		strcat_s(idtxt, ".txt");
+		
 		strcat_s(pack, ".txt");
 		strcat_s(review, ".txt");
 		strcat_s(guide, ".txt");
@@ -37,7 +37,8 @@ public:
 	}
 	void GetInfo()
 	{
-
+		cin >> idtxt;
+		strcat_s(idtxt, ".txt");
 		fstream fs(idtxt);
 		getline(fs, password);
 		getline(fs, name);
@@ -54,7 +55,6 @@ public:
 	{
 		double rankBefore, rankAfter;
 		int num;
-		char packname[50];
 		cout << "패키지 번호를 입력해주세요" << endl;
 		cin >> packname;
 		strcat_s(packname, ".");

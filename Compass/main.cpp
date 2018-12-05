@@ -22,6 +22,7 @@ int main()
 	Package p;
 	User user;
 //	p.addPackage();
-	user.PackReview();
+	user.GetInfo();
+	user.ChangeInfo();
 
 }
