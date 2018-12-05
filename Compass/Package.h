@@ -54,7 +54,7 @@ public:
 	}
 	void addPackage() //태두리 완성
 	{
-		PID = 0;
+		PID=-1;
 		int offset=0;
 		string search;
 		ifstream FileCheck("packagelist.txt");
