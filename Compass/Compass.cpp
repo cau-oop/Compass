@@ -1,4 +1,4 @@
-//Й╧─Й╡╫М┐°, Л²╢Л²≤Л└╜, М∙°Л┼╧К┌╗
+//╠Х╟Феб, юлюг╪╥, гя╫бЁ╡
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
