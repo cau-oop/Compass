@@ -1,5 +1,5 @@
 //김경태, 이의섭, 한승남
-
+/*
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -30,3 +30,4 @@ class Advertise : public User
 		
 	}
 };
+*/
