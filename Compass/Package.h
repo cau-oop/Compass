@@ -1,3 +1,4 @@
+#pragma once
 //김경태, 이의섭, 한승남
 
 #include <iostream>
@@ -16,7 +17,6 @@ using namespace std;
 
 
 
-int PID = 0;
 
 class Package
 {
@@ -54,7 +54,7 @@ public:
 	}
 	void addPackage() //태두리 완성
 	{
-		PID=0;
+		int PID=0;
 		int offset=0;
 		string search;
 		ifstream FileCheck("packagelist.txt");
