@@ -20,5 +20,8 @@ using namespace std;
 int main()
 {
 	Package p;
-	p.addPackage();
+	User user;
+//	p.addPackage();
+	user.PackReview();
+
 }

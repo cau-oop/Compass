@@ -86,6 +86,11 @@ public:
 		num++;
 		rankBefore += rankAfter;
 		ofstream fs3(pack, ios::ate);
+		if (fs3.is_open()) {
+		}
+		else {
+			cout << "파일을 찾을 수 없습니다!" << endl;
+		}
 		fs3 << rankBefore / num << " " << num << endl;
 		fs3.close();
 	}
@@ -100,6 +105,11 @@ public:
 		cout << "패키지의 리뷰를 입력해주세요" << endl;
 		cin >> a;
 		ofstream fs(packname, ios::app);
+		if (fs.is_open()) {
+		}
+		else {
+			cout << "파일을 찾을 수 없습니다!" << endl;
+		}
 		fs << "\n" << a << " - " << id;
 		fs.close();
 	}
