@@ -15,12 +15,10 @@
 #include <iomanip>
 #include <ctime>
 
-#define MAX_STR_LEN 4000
-
-
 using namespace std;
- 
+
 int main()
 {
-	cout<< "hello"<<endl;
+	Package p;
+	p.addPackage();
 }
