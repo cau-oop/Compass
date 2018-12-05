@@ -55,13 +55,15 @@ public:
 	void addPackage() //태두리 완성
 	{
 		int PID=0;
-		int offset=0;
+		size_t offset=0;
 		string search;
 		ifstream FileCheck("packagelist.txt");
 		string s;
 
-		if (FileCheck.is_open()) {
-			while (!FileCheck.eof()) {
+		if (FileCheck.is_open())
+		{
+			while (!FileCheck.eof())
+			{
 				search = "PID >>" + to_string(PID);
 				getline(FileCheck, s);
 				if ((offset == s.find(search, 0)) != string::npos)
