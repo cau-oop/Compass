@@ -3,9 +3,9 @@
 #include <iostream>
 //#include "WorkFlow_Greeter.h"
 //#include "Login.h"
-#include "obectClassFile.h"
+//#include "obectClassFile.h"
 #include "Package.h"
-#include "Advertise.h"
+//#include "Advertise.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -14,8 +14,6 @@
 #include <array>
 #include <iomanip>
 #include <ctime>
-
-#define MAX_STR_LEN 4000
 
 
 using namespace std;

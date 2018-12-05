@@ -1,5 +1,4 @@
 //김경태, 이의섭, 한승남
-#define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
 #include <fstream>
@@ -9,21 +8,22 @@
 #include <array>
 #include <iomanip>
 #include <ctime>
+#include "obectClassFile.h"
+#include "Package.h"
 
-#define MAX_STR_LEN 4000
 
 
 using namespace std;
 
 
-class Advertise : public User, public Package
+class Advertise : public User
 {
 	void advertisement()
 	{
 		int ad;
 		Package pack;
-		string uname = User::GetInfo(); //이렇게 
-		string country = User::getCount();
+		GetInfo(); //이렇게 
+		
 		
 		ad = rand() % pack.v.size();
 		cout << pack.v[ad] <<endl;
