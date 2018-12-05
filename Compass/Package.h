@@ -1,5 +1,4 @@
-//ê¹€ê²½íƒœ, ì´ì˜ì„­, í•œìŠ¹ë‚¨
-#define _CRT_SECURE_NO_WARNINGS
+//±è°æÅÂ, ÀÌÀÇ¼·, ÇÑ½Â³²
 
 #include <iostream>
 #include <fstream>
@@ -22,22 +21,22 @@ int PID = 0;
 class Package
 {
 public:
-	string searchloc; //ê°€ê³  ì‹¶ì€ ì§€ì—­ ì…ë ¥
-	int searchmin=0; //ìµœì†Œ ê°€ê²©
-	int searchmax=0; //ìµœëŒ€ ê°€ê²©
-	string searchdate; //ì¶œë°œì¼
-	string searchvia; //ê²½ìœ  ìœ ë¬´
-	string searchfree; //ììœ ì¼ì • ìœ ë¬´
-	int searchppl=0; //ì—¬í–‰ì¸ì›
+	string searchloc; //°¡°í ½ÍÀº Áö¿ª ÀÔ·Â
+	int searchmin = 0; //ÃÖ¼Ò °¡°İ
+	int searchmax = 0; //ÃÖ´ë °¡°İ
+	string searchdate; //Ãâ¹ßÀÏ
+	string searchvia; //°æÀ¯ À¯¹«
+	string searchfree; //ÀÚÀ¯ÀÏÁ¤ À¯¹«
+	int searchppl = 0; //¿©ÇàÀÎ¿ø
 	string reviewstr;
 
 	float rank;
 	int buyer;
 
 	int reviewbuyer;
-	string Pname[100]; //íŒ¨í‚¤ì§€ ì´ë¦„
-	string location[100]; //ì§€ì—­
-	string tag[100]; //í•´ì‹œíƒœê·¸
+	string Pname[100]; //ÆĞÅ°Áö ÀÌ¸§
+	string location[100]; //Áö¿ª
+	string tag[100]; //ÇØ½ÃÅÂ±×
 	int price[100];
 	int via[100];
 
@@ -53,10 +52,10 @@ public:
 	{
 
 	}
-	void addPackage() //íƒœë‘ë¦¬ ì™„ì„±
+	void addPackage() //ÅÂµÎ¸® ¿Ï¼º
 	{
 		PID = 0;
-		int offset;
+		int offset=0;
 		string search;
 		ifstream FileCheck("packagelist.txt");
 		string s;
@@ -74,48 +73,48 @@ public:
 
 		}
 		else {
-			cout << "íŒŒì¼ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!" << endl;
+			cout << "ÆÄÀÏÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù!" << endl;
 		}
 
 		cout << "Package ID :" << PID << endl;
-		cout << "íŒ¨í‚¤ì§€ ì´ë¦„: ";
+		cout << "ÆĞÅ°Áö ÀÌ¸§: ";
 		//cin.ignore();
 		getline(cin, Pname[PID]);
-		cout << "ì§€ì—­ : ";
+		cout << "Áö¿ª : ";
 		getline(cin, location[PID]);
-		cout << "íƒœê·¸: ";
+		cout << "ÅÂ±×: ";
 		getline(cin, tag[PID]);
-		cout << "ê°€ê²©(ì›í™”): ";
+		cout << "°¡°İ(¿øÈ­): ";
 		cin >> price[PID];
-		cout << "ê²½ìœ  ìœ ë¬´ (1. YES 0. NO): ";
+		cout << "°æÀ¯ À¯¹« (1. YES 0. NO): ";
 		cin >> via[PID];
-		cout << "ì—¬í–‰ ì¶œë°œì¼: ";
+		cout << "¿©Çà Ãâ¹ßÀÏ: ";
 		cin >> trav_start_date[PID];
-		cout << "ì—¬í–‰ ì¶œë°œ ì‹œê°„:(ì‹œ ë¶„) ";
+		cout << "¿©Çà Ãâ¹ß ½Ã°£:(½Ã ºĞ) ";
 		cin >> trav_start_hour[PID];
-		cout << "ì—¬í–‰ê¸°ê°„: ";
+		cout << "¿©Çà±â°£: ";
 		cin >> how_long_trav[PID];
-		cout << "ììœ ì—¬í–‰ (1. YES 0. NO) : ";
+		cout << "ÀÚÀ¯¿©Çà (1. YES 0. NO) : ";
 		cin >> free_trav[PID];
-		cout << "ìµœì†Œì¸ì› :";
+		cout << "ÃÖ¼ÒÀÎ¿ø :";
 		cin >> minppl[PID];
-		cout << "ìµœëŒ€ì¸ì› :";
+		cout << "ÃÖ´ëÀÎ¿ø :";
 		cin >> maxppl[PID];
 
 		ofstream os;
 		os.open("packagelist.txt", ios::app);
 		os << "PID >>" << PID;
-		os << " || íŒ¨í‚¤ì§€ >>" << Pname[PID];
-		os << " || ì§€ì—­ >>" << location[PID];
-		os << " || íƒœê·¸(ë„ì–´ì“°ê¸° ì—†ì´) >>" << tag[PID];
-		os << " || ê°€ê²© >> " << price[PID];
-		os << " || ê²½ìœ  >>" << via[PID];
-		os << " || ì¶œë°œì¼ >>" << trav_start_date[PID];
-		os << " || ì¶œë°œì‹œê°„ >>" << trav_start_hour[PID];
-		os << " || ì—¬í–‰ê¸°ê°„ >>" << how_long_trav[PID];
-		os << " || ììœ ì—¬í–‰ >>" << free_trav[PID];
-		os << " || ìµœì†Œì¸ì› >> " << minppl[PID];
-		os << " || ìµœëŒ€ì¸ì› >> " << maxppl[PID] << endl;
+		os << " || ÆĞÅ°Áö >>" << Pname[PID];
+		os << " || Áö¿ª >>" << location[PID];
+		os << " || ÅÂ±×(¶ç¾î¾²±â ¾øÀÌ) >>" << tag[PID];
+		os << " || °¡°İ >> " << price[PID];
+		os << " || °æÀ¯ >>" << via[PID];
+		os << " || Ãâ¹ßÀÏ >>" << trav_start_date[PID];
+		os << " || Ãâ¹ß½Ã°£ >>" << trav_start_hour[PID];
+		os << " || ¿©Çà±â°£ >>" << how_long_trav[PID];
+		os << " || ÀÚÀ¯¿©Çà >>" << free_trav[PID];
+		os << " || ÃÖ¼ÒÀÎ¿ø >> " << minppl[PID];
+		os << " || ÃÖ´ëÀÎ¿ø >> " << maxppl[PID] << endl;
 
 		os.close();
 	}
@@ -135,67 +134,67 @@ public:
 		int option[7] = { 0 };
 		string comparedata[7];
 		int findpackagecount = 0;
-		int buypacknumber=0; //ìƒí’ˆë²ˆí˜¸
-		int buynum; //ì…ë ¥ë°›ì„ ìƒí’ˆë²ˆí˜¸
+		int buypacknumber = 0; //»óÇ°¹øÈ£
+		int buynum; //ÀÔ·Â¹ŞÀ» »óÇ°¹øÈ£
 		int condition[100] = { 0, };
 
-		cout << "ê²€ìƒ‰ ì˜µì…˜ : " << endl;
-		cout << "1.ì§€ì—­ 1. Yes  2. No" << endl;
+		cout << "°Ë»ö ¿É¼Ç : " << endl;
+		cout << "1.Áö¿ª 1. Yes  2. No" << endl;
 		cin >> option[0];
 		if (option[0] == 1)
 		{
-			cout << "ê°€ê³  ì‹¶ì€ ì§€ì—­ì„ ì…ë ¥í•˜ì„¸ìš”>> ";
+			cout << "°¡°í ½ÍÀº Áö¿ªÀ» ÀÔ·ÂÇÏ¼¼¿ä>> ";
 			cin >> searchloc;
 			comparedata[0] = searchloc;
 		}
-		cout << "2.ìµœì†Œê°€ê²© 1. Yes  2. No" << endl;
+		cout << "2.ÃÖ¼Ò°¡°İ 1. Yes  2. No" << endl;
 		cin >> option[1];
 		if (option[1] == 1)
 		{
-			cout << "ìµœì†Œê°€ê²©ì„ ì…ë ¥í•˜ì„¸ìš”>> ";
+			cout << "ÃÖ¼Ò°¡°İÀ» ÀÔ·ÂÇÏ¼¼¿ä>> ";
 			cin >> searchmin;
-			comparedata[1] = "ê°€ê²© >> ";
+			comparedata[1] = "°¡°İ >> ";
 		}
-		cout << "3.ìµœëŒ€ê°€ê²© 1. Yes  2. No" << endl;
+		cout << "3.ÃÖ´ë°¡°İ 1. Yes  2. No" << endl;
 		cin >> option[2];
 		if (option[2] == 1)
 		{
-			cout << "ìµœëŒ€ê°€ê²©ì„ ì…ë ¥í•˜ì„¸ìš”>> ";
+			cout << "ÃÖ´ë°¡°İÀ» ÀÔ·ÂÇÏ¼¼¿ä>> ";
 			cin >> searchmax;
-			comparedata[2] = "ê°€ê²© >> ";
+			comparedata[2] = "°¡°İ >> ";
 		}
-		cout << "4.ì¶œë°œì¼ 1. Yes  2. No" << endl;
+		cout << "4.Ãâ¹ßÀÏ 1. Yes  2. No" << endl;
 		cin >> option[3];
 		if (option[3] == 1)
 		{
-			cout << "ì¶œë°œì¼ì„ ì…ë ¥í•˜ì„¸ìš”>> ";
+			cout << "Ãâ¹ßÀÏÀ» ÀÔ·ÂÇÏ¼¼¿ä>> ";
 			cin >> searchdate;
 			comparedata[3] = searchdate;
 		}
-		cout << "5.ê²½ìœ  1. Yes  2. No" << endl;
+		cout << "5.°æÀ¯ 1. Yes  2. No" << endl;
 		cin >> option[4];
 		if (option[4] == 1)
 		{
-			cout << "ê²½ìœ ë¥¼ í•˜ì‹¤ê±´ê°€ìš”? 0. ì•„ë‹ˆìš” / 1. ì˜ˆ >> ";
+			cout << "°æÀ¯¸¦ ÇÏ½Ç°Ç°¡¿ä? 0. ¾Æ´Ï¿ä / 1. ¿¹ >> ";
 			cin >> searchvia;
-			comparedata[4] = "ê²½ìœ  >>" + searchvia;
+			comparedata[4] = "°æÀ¯ >>" + searchvia;
 		}
 
-		cout << "6.ììœ ì¼ì • 1. Yes  2. No" << endl;
+		cout << "6.ÀÚÀ¯ÀÏÁ¤ 1. Yes  2. No" << endl;
 		cin >> option[5];
 		if (option[5] == 1)
 		{
-			cout << "ììœ ì¼ì • 0. ì•„ë‹ˆìš” / 1. ì˜ˆ >> ";
+			cout << "ÀÚÀ¯ÀÏÁ¤ 0. ¾Æ´Ï¿ä / 1. ¿¹ >> ";
 			cin >> searchfree;
-			comparedata[5] = "ììœ ì—¬í–‰ >>" + searchfree;
+			comparedata[5] = "ÀÚÀ¯¿©Çà >>" + searchfree;
 		}
-		cout << "7.ì—¬í–‰ì¸ì› 1. Yes  2. No" << endl;
+		cout << "7.¿©ÇàÀÎ¿ø 1. Yes  2. No" << endl;
 		cin >> option[6];
 		if (option[6] == 1)
 		{
-			cout << "ì—¬í–‰ì¸ì› >> ";
+			cout << "¿©ÇàÀÎ¿ø >> ";
 			cin >> searchppl;
-			comparedata[6] = "ì¸ì› >>";
+			comparedata[6] = "ÀÎ¿ø >>";
 		}
 
 		ifstream spack;
@@ -214,7 +213,7 @@ public:
 			char *tok4 = NULL;
 			string str_arr[1000];
 			string str_arr2[100];
-			
+
 			if (option[0] == 1)
 				findloc = v[i].find(comparedata[0]);
 			if (option[1] == 1 || option[2] == 1)
@@ -236,7 +235,7 @@ public:
 					strcpy(comp, str_arr[4].c_str());
 					tok2 = strtok(comp, ">>");
 					str_arr2[0] = string(tok2);
-					tok2 = strtok(nullptr, ">>"); //ê°€ê²© ì €ì¥
+					tok2 = strtok(nullptr, ">>"); //°¡°İ ÀúÀå
 					int convertstr = atoi(tok2);
 					if (option[1] == 1)
 					{
@@ -291,14 +290,14 @@ public:
 					strcpy(comp2, str_arr[10].c_str());
 					tok3 = strtok(comp2, ">>");
 					str_arr2[0] = string(tok3);
-					tok3 = strtok(nullptr, ">>"); //ìµœì†Œì¸ì› ì €ì¥
-					int convertpplmin = atoi(tok3); //int ë³€í™˜
+					tok3 = strtok(nullptr, ">>"); //ÃÖ¼ÒÀÎ¿ø ÀúÀå
+					int convertpplmin = atoi(tok3); //int º¯È¯
 
 					strcpy(comp2, str_arr[11].c_str());
 					tok4 = strtok(comp2, ">>");
 					str_arr2[0] = string(tok4);
-					tok4 = strtok(nullptr, ">>"); //ìµœëŒ€ì¸ì› ì €ì¥
-					int convertpplmax = atoi(tok4); //int ë³€í™˜
+					tok4 = strtok(nullptr, ">>"); //ÃÖ´ëÀÎ¿ø ÀúÀå
+					int convertpplmax = atoi(tok4); //int º¯È¯
 
 					if (convertpplmin <= searchppl && convertpplmax >= searchppl)
 					{
@@ -315,17 +314,17 @@ public:
 					{
 						if (ppltrue == 1 && pricetrue == 1)
 						{
-							cout << "ìƒí’ˆ : "<< buypacknumber << "-> "<< v[i] << endl;
+							cout << "»óÇ° : " << buypacknumber << "-> " << v[i] << endl;
 							findpackagecount++;
 							buypacknumber++;
 							condition[i] = 1;
 						}
 					}
-					else 
+					else
 					{
 						if (pricetrue == 1)
 						{
-							cout << "ìƒí’ˆ : " << buypacknumber << "-> " << v[i] << endl;
+							cout << "»óÇ° : " << buypacknumber << "-> " << v[i] << endl;
 							findpackagecount++;
 							buypacknumber++;
 							condition[i] = 1;
@@ -337,7 +336,7 @@ public:
 				{
 					if (ppltrue == 1)
 					{
-						cout << "ìƒí’ˆ : " << buypacknumber << "-> " << v[i] << endl;
+						cout << "»óÇ° : " << buypacknumber << "-> " << v[i] << endl;
 						findpackagecount++;
 						buypacknumber++;
 						condition[i] = 1;
@@ -347,24 +346,24 @@ public:
 				}
 				else
 				{
-					cout << "ìƒí’ˆ : " << buypacknumber << "-> " << v[i] << endl;
+					cout << "»óÇ° : " << buypacknumber << "-> " << v[i] << endl;
 					findpackagecount++;
 					buypacknumber++;
 					condition[i] = 1;
 
 				}
-		
+
 			}
-			
+
 
 			free(str_buff);
 			free(str_buff2);
 		}
 		if (findpackagecount == 0)
-			cout << "ê²€ìƒ‰í•˜ì‹  ì¡°ê±´ì— ë§ëŠ” íŒ¨í‚¤ì§€ë¥¼ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤" << endl;
+			cout << "°Ë»öÇÏ½Å Á¶°Ç¿¡ ¸Â´Â ÆĞÅ°Áö¸¦ Ã£Áö ¸øÇß½À´Ï´Ù" << endl;
 		else
 		{
-			cout << "\nêµ¬ë§¤ í•˜ì‹¤ íŒ¨í‚¤ì§€ ìƒí’ˆë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš” >>";
+			cout << "\n±¸¸Å ÇÏ½Ç ÆĞÅ°Áö »óÇ°¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä >>";
 			cin >> buynum;
 			if (condition[buynum] == 1)
 			{
@@ -373,7 +372,7 @@ public:
 			}
 			else
 			{
-				cout << "ì˜ëª» ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤" << endl;
+				cout << "Àß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù" << endl;
 			}
 
 
@@ -381,7 +380,7 @@ public:
 
 		spack.close();
 
-		
+
 
 
 	}
@@ -390,12 +389,10 @@ public:
 	void buyPackage()
 	{
 		int paymentopt;
-		cout << "íŒ¨í‚¤ì§€ êµ¬ë§¤" << endl;
-		cout << "êµ¬ë§¤ ë°©ë²• : 1.ì¹´ë“œ\t2.ë¬´í†µì¥ì…ê¸ˆ\t3.Payco\t4.ì¹´ì¹´ì˜¤í˜ì´" << endl;
+		cout << "ÆĞÅ°Áö ±¸¸Å" << endl;
+		cout << "±¸¸Å ¹æ¹ı : 1.Ä«µå\t2.¹«ÅëÀåÀÔ±İ\t3.Payco\t4.Ä«Ä«¿ÀÆäÀÌ" << endl;
 		cin >> paymentopt;
 
 	}
 
 };
-
-
