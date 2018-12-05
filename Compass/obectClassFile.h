@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include "Login.h"
 using namespace std;
 
 
@@ -12,7 +13,7 @@ class User
 private:
 	string password;
 	string name;
-	string sex;
+	string gender;
 	string birth;
 	string phone;
 	string spam;
@@ -35,14 +36,48 @@ public:
 		strcat_s(rank, ".txt");
 		string s;
 	}
+	string getPassword()
+	{
+		return password;
+	}
+	string getName()
+	{
+		return name;
+	}
+	string getGender()
+	{
+		return gender;
+	}
+	string getBirth()
+	{
+		return birth;
+	}
+	string getPHone()
+	{
+		return phone;
+	}
+	string getSpam()
+	{
+		return spam;
+	}
+	string getCountry()
+	{
+		return country;
+	}
+	string getCity()
+	{
+		return city;
+	}
+
 	void GetInfo()
 	{
-		cin >> idtxt;
+		LoginSystem log1;
+		//strcpy(idtxt,log1.getCurrentID());
 		strcat_s(idtxt, ".txt");
 		fstream fs(idtxt);
 		getline(fs, password);
 		getline(fs, name);
-		getline(fs, sex);
+		getline(fs, gender);
 		getline(fs, birth);
 		getline(fs, phone);
 		getline(fs, spam);
@@ -148,7 +183,7 @@ public:
 		ofstream fs4(idtxt, ios::ate);
 		fs4 << password;
 		fs4 << "\n" << name;
-		fs4 << "\n" << sex;
+		fs4 << "\n" << gender;
 		fs4 << "\n" << birth;
 		fs4 << "\n" << phone;
 		fs4 << "\n" << spam;
