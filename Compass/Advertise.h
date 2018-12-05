@@ -48,7 +48,7 @@ public:
 			findline++;
 		}	
 	}
-	void advertisement_member()
+	/*void advertisement_member()
 	{
 		string locationad;
 		string mline;
@@ -60,5 +60,5 @@ public:
 			getline(ADMem, mline);
 			if((findpersonal == ADMem.find( ))
 		}
-	}
+	}*/
 };

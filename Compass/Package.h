@@ -103,7 +103,7 @@ public:
 		cin >> minppl[PID];
 		cout << "최대인원 :";
 		cin >> maxppl[PID];
-
+		
 		ofstream os;
 		os.open("packagelist.txt", ios::app);
 		os << "PID >>" << PID;
@@ -120,6 +120,9 @@ public:
 		os << " || 최대인원 >> " << maxppl[PID] << endl;
 
 		os.close();
+		ofstream newfile;
+		newfile.open(PID + ".rank");
+		newfile << "0 0";
 	}
 
 	void fileRead(ifstream& spack, vector<string>& v)
