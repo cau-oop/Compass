@@ -123,11 +123,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="obectClassFile.h" />
+    <ClInclude Include="Package.h" />
     <ClInclude Include="WorkFlow_Greeter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Advertise.h" />
-    <ClInclude Include="Package.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
