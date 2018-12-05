@@ -52,7 +52,7 @@ public:
 	{
 		return birth;
 	}
-	string getPHone()
+	string getPhone()
 	{
 		return phone;
 	}
