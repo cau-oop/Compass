@@ -120,12 +120,17 @@ public:
 		os << " || 최대인원 >> " << maxppl[PID] << endl;
 
 		os.close();
-
 		filename = to_string(PID) + ".rank.txt";
-		ifstream newfile(filename.c_str(), ios::out);	
-		ofstream nf(filename, ios::app);
-		nf << "0 0";
-		nf.close();
+		ofstream newrank;
+		newrank.open(filename);
+		newrank << "0 0";
+		newrank.close();
+		filename = to_string(PID) + ".review.txt";
+		ofstream newreview;
+		newreview.open(filename);
+		newreview << "리뷰목록" << endl;
+		newreview.close();
+
 	}
 
 	void fileRead(ifstream& spack, vector<string>& v)
