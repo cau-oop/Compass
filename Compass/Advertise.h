@@ -52,12 +52,12 @@ public:
 		string locationad;
 		string mline;
 		size_t findpersonal=0;
-		User::getCountry;
+		User::getCountry();
 		ifstream ADMem("packagelist.txt");
 		while (!ADMem.eof())
 		{
 			getline(ADMem, mline);
-			if((findpersonal == ADMem.find( ))
+			if((findpersonal == ADMem.find(getCountry() ))
 		}
 	}*/
 };
