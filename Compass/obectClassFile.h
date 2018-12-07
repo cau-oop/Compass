@@ -12,6 +12,7 @@ class User
 {
 private:
 	string password;
+	string isPremium;
 	string name;
 	string gender;
 	string birth;
@@ -76,6 +77,7 @@ public:
 		strcat_s(idtxt, ".txt");
 		fstream fs(idtxt);
 		getline(fs, password);
+		getline(fs, isPremium);
 		getline(fs, name);
 		getline(fs, gender);
 		getline(fs, birth);

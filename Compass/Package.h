@@ -15,9 +15,6 @@
 
 using namespace std;
 
-
-
-
 class Package
 {
 public:

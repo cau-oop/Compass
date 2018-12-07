@@ -1,7 +1,6 @@
-//ê¹€ê²½íƒœ, ì´ì˜ì„­, í•œìŠ¹ë‚¨
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-//#include "WorkFlow_Greeter.h"
+#include "WorkFlow_Greeter.h"
 #include "Login.h"
 #include "obectClassFile.h"
 #include "Package.h"
@@ -17,16 +16,113 @@
 
 using namespace std;
 
+// system work flow
+int work();
+
+
 int main()
 {
-	Package p;
-	User user;
-	p.addPackage();
-	//user.GetInfo();
-	//user.ChangeInfo();
+	bool success;
+	success = work();
+	
+	// Á¤»ó ÀÛµ¿.
+	if (success == true) {
+		return 0;
+	}
 
-	//user.PackReview();
-	srand(time(NULL));
-	Advertise ad;
-	ad.advertisement_xmemeber();
+	// ºñÁ¤»ó ÀÛµ¿.
+	if (success == false) {
+		return 1;
+	}
+}
+
+int work() {
+	LoginSystem loginSystem;
+	int login_or_join_option;
+	int login_optionNum; // ·Î±×ÀÎ ¼º°ø ½Ã optionNum(ÀÏ¹İ È¸¿ø : 1, ¿©Çà»ç : 2, °¡ÀÌµå : 3) ÀúÀå.  ·Î±×ÀÎ ½ÇÆĞ ½Ã -1 ÀúÀå.
+
+	while(1){
+
+		Greeter::initialMessage();
+		scanf("%d", &login_or_join_option);
+		
+
+		login_optionNum = selectFirstOption(login_or_join_option, loginSystem); 
+		// ·Î±×ÀÎ ½ÇÆĞ ½Ã ÇÁ·Î±×·¥ Á¾·á.
+		if(login_optionNum == -1)
+			exit(0); // gui ±¸Çö½Ã ÇÑ¹ø ´õ ¹¯°í ²ô±â.
+
+
+		// ·Î±×ÀÎ ¼º°ø ½Ã
+		switch (login_optionNum) {
+		case 1:
+			Greeter::greet(loginSystem.getCurrentID(), login_optionNum);
+			Greeter::availGeneralUserOption();
+			operation_UserOption();
+			break;
+
+		case 2:
+			Greeter::greet(loginSystem.getCurrentID(), login_optionNum);
+			Greeter::availTravelAgencyOption();
+			operation_AgencyOption();
+			break;
+		case 3:
+			Greeter::greet(loginSystem.getCurrentID(), login_optionNum);
+			Greeter::availGuideOption();
+			operation_GuideOption();
+			break;
+		}
+
+		
+		
+
+	}
+
+	return 1;
+}
+
+// login Á¤»óÀûÀ¸·Î ¼º°ø ½Ã ´ÙÀ½ È­¸éÀ¸·Î °¡µµ·Ï true ¹İÈ¯.
+int selectFirstOption(int login_or_join_option, LoginSystem & loginSystem) {
+	int loginSuccess = -1; // ¼º°ø ½Ã optionNum(ÀÏ¹İ È¸¿ø : 1, ¿©Çà»ç : 2, °¡ÀÌµå : 3) ÀúÀå.  ½ÇÆĞ ½Ã -1 ÀúÀå.
+
+	do {
+		// È¸¿ø°¡ÀÔ ¼±ÅÃ½Ã.
+		if (login_or_join_option == 1) {
+			loginSystem.createMember();
+		}
+
+		// login ¼±ÅÃ½Ã.
+		else if (login_or_join_option == 2) {
+			loginSuccess = loginSystem.login();
+		}
+
+		// exit ¼±ÅÃ½Ã.
+		else if (login_or_join_option == 3) {
+			return -1;
+		}
+
+		// ¾ø´Â option ¼±ÅÃ ½Ã. gui ±¸Çö½Ã °í·Á ¾ÈÇØµµ µÊ.
+		else {
+			printf("Àß¸ø ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä. \n\n");
+		}
+	} while (loginSuccess == -1);
+
+	return loginSuccess;
+}
+
+void operation_UserOption() {
+	int user_optionNum; // User·Î ·Î±×ÀÎ ½Ã ±× ¾È¿¡¼­ ¼¼ºÎÀûÀÎ ¸Ş´º ¼±ÅÃÇÒ ¶§ ÀÔ·Â ¹ŞÀ» ¿É¼Ç ¹øÈ£.
+	Greeter::availGeneralUserOption();
+
+	switch (user_optionNum) {
+
+	}
+}
+
+void operation_AgencyOption() {
+
+}
+
+void operation_GuideOption() {
+
 }

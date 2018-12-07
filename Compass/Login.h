@@ -32,8 +32,8 @@ class LoginSystem {
 private:
 	char * currentLogID;
 	char * currentUserType;
-	static FILE * writer_UserInfo;
-	static FILE * reader_UserInfo;
+	FILE * writer_UserInfo;
+	FILE * reader_UserInfo;
 
 public:
 
@@ -41,7 +41,7 @@ public:
 		return currentLogID;
 	}
 
-	static void createMember() {
+	void createMember() {
 		int optionNum; // 메뉴 옵션 중 선택 번호.
 		char isSuccess; // 회원가입 성공, 실패 여부.
 
@@ -64,14 +64,8 @@ public:
 		// guide로 회원가입 시 입력받을 요소.
 		char guideLicenseNumber[GUIDE_LICENSE_MAX_LENGTH + 1];
 
-
 		// 회원가입 창과 회원가입 메뉴(옵션).
-		cout << "/// Join Membership ///" << endl;
-
-		cout << "1 : General Member\n" << endl;
-		cout << "2 : One-man Travel Agency\n" << endl;
-		cout << "3 : Guide except for Travel Agency\n" << endl;
-		cout << "4 : Exit" << endl;
+		Greeter::joinMembershipMessage();
 
 
 		// 메뉴(옵션) 중 선택.
@@ -166,14 +160,12 @@ public:
 	//// 일반 회원일 때, 여행사 일 때, 가이드 일 때 반복되는(공통인) 부분 깔끔하게 정리 하기.
 	// 고칠때 strcpy(currentUserType, "one-man travel agency"); <- 각각에서 이 문장 하나만 고치면 될듯.
 	// optionNum 받아와서 switch 해서 각각 별로 strcpy(currentUserType, "one-man travel agency"); 이거 넣기.
-	void login() {
+	// login 성공 시 true 반환, 실패시 false 반환.
+	int login() {
 		int optionNum, loginNum = 0;
 		bool isSuccess = false; // 로그인 성공, 실패. 초기값 : false
 		char inputID[ID_MAX_LENGTH + 1], inputPWD[PWD_MAX_LENGTH + 1];
 		Greeter::loginOptionMessage();
-
-		cout << "\n입력 : ";
-		cin >> optionNum;
 
 		// 메뉴(옵션) 중 선택.
 		cout << "입력 : ";
@@ -193,14 +185,14 @@ public:
 					scanf("%s", inputID);
 						
 					if (!strcmp(inputID, "0"))
-						break;
+						return -1; // 로그인 취소 시 -1 반환.
 			
 					printf("\n비밀번호를 입력하세요.(로그인 취소 : PWD : 0)\n");
 					printf("PWD : ");
 					scanf("%s", inputPWD);
 
 					if (!strcmp(inputPWD, "0"))
-						break;
+						return -1; // 로그인 취소 시 -1 반환.
 
 					// 연속으로 5번 틀리면 프로그램 강제종료.
 					loginNum++;
@@ -231,14 +223,14 @@ public:
 					scanf("%s", inputID);
 	
 					if (!strcmp(inputID, "0"))
-						break;
+						return -1; // 로그인 취소 시 -1 반환.
 	
 					printf("\n비밀번호를 입력하세요.(로그인 취소 : PWD : 0)\n");
 					printf("PWD : ");
 					scanf("%s", inputPWD);
 
 					if (!strcmp(inputPWD, "0"))
-						break;
+						return -1; // 로그인 취소 시 -1 반환.
 
 					// 연속으로 5번 틀리면 프로그램 강제종료.
 					loginNum++;
@@ -269,14 +261,14 @@ public:
 					scanf("%s", inputID);
 						
 					if (!strcmp(inputID, "0"))
-						break;
+						return -1; // 로그인 취소 시 -1 반환.
 
 					printf("\n비밀번호를 입력하세요.(로그인 취소 : PWD : 0)\n");
 					printf("PWD : ");
 					scanf("%s", inputPWD);
 	
 					if (!strcmp(inputPWD, "0"))
-						break;
+						return -1; // 로그인 취소 시 -1 반환.
 
 					// 연속으로 5번 틀리면 프로그램 강제종료.
 					loginNum++;
@@ -299,10 +291,10 @@ public:
 				break;
 
 			default:
-				exit(0);
+				cout << "잘못 입력하셨습니다. 다시 입력해주세요.\n\n";
 		}
 
-	
+		return optionNum;
 
 	}
 
@@ -313,10 +305,10 @@ public:
 	// 아이디(글자수 제한), 비밀번호(글자수 제한), 이름(글자수 제한), 성별(M, W만), 생년월일(6자리, 유효한(전에 과제)), 전화번호(11자리) 등
 	// 유효한지 확인하는 함수 구현해서 넣기.
 	// 성별, 생년월일 등 유효한지 확인해야 나중에 파일에서 다시 가져와서 이용할 때 오류 안남(예외 생기는 것 방지).
-	static bool getUserInfo(char * input_ID, char * input_PWD, char * input_name, char & input_gender,
+	bool getUserInfo(char * input_ID, char * input_PWD, char * input_name, char & input_gender,
 		char * input_birth, char * input_phoneNumber, char & input_advertiseAcceptOrNot,
 		char * input_interestCountry, char * input_interestRegion) {
-		
+
 		cout << "회원님의 정보를 입력받아 '일반 회원' 회원가입을 진행합니다(회원가입을 취소하고 싶은 경우 각 입력과정들 중 하나에서 0을 입력.)\n" << endl;
 		cout << "\n회원 아이디와 비밀번호를 설정합니다" << endl;
 
@@ -324,63 +316,72 @@ public:
 		do {
 			cout << "아이디를 입력해주세요(띄어쓰기 허용 x, 회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_ID;
-			return !isCancelJoinMember(input_ID);
+			if (isCancelJoinMember(input_ID))
+				return false;
 		} while (atoi(input_ID) == 1);
 
 		// 비밀번호.
 		do {
 			cout << "비밀번호를 입력해주세요(띄어쓰기 허용 x, 회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_PWD;
-			return !isCancelJoinMember(input_PWD);
+			if (isCancelJoinMember(input_PWD))
+				return false;
 		} while (atoi(input_PWD) == 1);
 
 		// 이름.
 		do {
 			cout << "이름을 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_name;
-			return !isCancelJoinMember(input_name);
+			if (isCancelJoinMember(input_name))
+				return false;
 		} while (atoi(input_name) == 1);
 
 
 		do {
 			cout << "성별을 입력해주세요(남자 : M, 여자 : W, 회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_gender;
-			return !isCancelJoinMember(input_gender);
+			if (isCancelJoinMember(input_gender))
+				return false;
 		} while (input_gender == '1');
 
 
 		do {
 			cout << "생년월일을 입력해주세요(ex 180528, 회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_birth;
-			return !isCancelJoinMember(input_birth);
+			if (isCancelJoinMember(input_birth))
+				return false;
 		} while (atoi(input_birth) == 1);
 
 
 		do {
 			cout << "전화번호를 입력해주세요(ex 01067891234, 회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_phoneNumber;
-			return !isCancelJoinMember(input_phoneNumber);
+			if (isCancelJoinMember(input_phoneNumber))
+				return false;
 		} while (atoi(input_phoneNumber) == 1);
 
 
 		do {
 			cout << "광고수신여부를 입력해주세요(허용 : Y, 거부 : N, 회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_advertiseAcceptOrNot;
-			return !isCancelJoinMember(input_advertiseAcceptOrNot);
+			if (isCancelJoinMember(input_advertiseAcceptOrNot))
+				return false;
 		} while (input_advertiseAcceptOrNot == '1');
 
 
 		do {
 			cout << "관심 나라를 입력해주세요(ex 한국, 미국, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
 			cin >> input_interestCountry;
-			return !isCancelJoinMember(input_interestCountry);
+			if (isCancelJoinMember(input_interestCountry))
+				return false;
 		} while (atoi(input_interestCountry) == 1);
 
 
 		do {
 			cout << "관심 도시(또는 유명 지역, 관광명소)를 입력해주세요(ex 서울, 뉴욕, 후지산, 신주쿠, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
 			cin >> input_interestRegion;
-			return !isCancelJoinMember(input_interestRegion);
+			if (isCancelJoinMember(input_interestRegion))
+				return false;
 		} while (atoi(input_interestRegion) == 1);
 
 		
@@ -390,7 +391,7 @@ public:
 	// One-Man Travel Agency로 회원가입 시 필요한 사용자 정보를 입력 받음.
 	// 유효한지 확인하는 함수 구현해서 넣기.
 	// 유효한지 확인해야 나중에 파일에서 다시 가져와서 이용할 때 오류 안남(예외 생기는 것 방지).
-	static bool getUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_agencyName, char * input_phoneNumber,
+	bool getUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_agencyName, char * input_phoneNumber,
 		char * input_LicenseNumber, char * input_mainCountry, char * input_mainRegion) {
 
 		cout << "회원님의 정보를 입력받아 '사업자' 회원가입을 진행합니다(회원가입을 취소하고 싶은 경우 각 입력과정들 중 하나에서 0을 입력.)\n" << endl;
@@ -400,56 +401,64 @@ public:
 		do {
 			cout << "아이디를 입력해주세요(띄어쓰기 허용 x, 회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_ID;
-			return !isCancelJoinMember(input_ID);
+			if (isCancelJoinMember(input_ID))
+				return false;
 		} while (atoi(input_ID) == 1);
 
 		// 비밀번호.
 		do {
 			cout << "비밀번호를 입력해주세요(띄어쓰기 허용 x, 회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_PWD;
-			return !isCancelJoinMember(input_PWD);
+			if (isCancelJoinMember(input_PWD))
+				return false;
 		} while (atoi(input_PWD) == 1);
 
 		// 사업자 이름.
 		do {
 			cout << "사업자 이름을 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_name;
-			return !isCancelJoinMember(input_name);
+			if (isCancelJoinMember(input_name))
+				return false;
 		} while (atoi(input_name) == 1);
 
 		// 여행사 이름.
 		do {
 			cout << "여행사 이름을 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_agencyName;
-			return !isCancelJoinMember(input_agencyName);
+			if (isCancelJoinMember(input_agencyName))
+				return false;
 		} while (atoi(input_agencyName) == 1);
 
 		// 전화번호.
 		do {
 			cout << "전화번호를 입력해주세요(ex 01067891234, 회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_phoneNumber;
-			return !isCancelJoinMember(input_phoneNumber);
+			if (isCancelJoinMember(input_phoneNumber))
+				return false;
 		} while (atoi(input_phoneNumber) == 1);
 
 		// 여행사 사업자 등록번호.
 		do {
 			cout << "여행사 사업자 등록번호(10자리, '-' 제외)를 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_LicenseNumber;
-			return !isCancelJoinMember(input_LicenseNumber);
+			if (isCancelJoinMember(input_LicenseNumber))
+				return false;
 		} while (atoi(input_LicenseNumber) == '1');
 
 		// 전담 나라
 		do {
 			cout << "해당 여행사(패키지)에서 주로 취급하는 나라를 입력해주세요(ex 한국, 미국, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
 			cin >> input_mainCountry;
-			return !isCancelJoinMember(input_mainCountry);
+			if (isCancelJoinMember(input_mainCountry))
+				return false;
 		} while (atoi(input_mainCountry) == 1);
 
 		// 전담 도시(또는 유명 지역 이름 또는 유명 명소)
 		do {
 			cout << "해당 여행사(패키지)에서 주로 취급하는 도시(또는 유명 지역, 관광명소)를 입력해주세요(ex 서울, 뉴욕, 후지산, 신주쿠, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
 			cin >> input_mainRegion;
-			return !isCancelJoinMember(input_mainRegion);
+			if (isCancelJoinMember(input_mainRegion))
+				return false;
 		} while (atoi(input_mainRegion) == 1);
 
 
@@ -459,7 +468,7 @@ public:
 	// Guide로 회원가입 시 필요한 사용자 정보를 입력받음.
 	// 유효한지 확인하는 함수 구현해서 넣기.
 	// 유효한지 확인해야 나중에 파일에서 다시 가져와서 이용할 때 오류 안남(예외 생기는 것 방지).
-	static bool getUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_phoneNumber,
+	bool getUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_phoneNumber,
 		char * input_LicenseNumber, char * input_mainCountry, char * input_mainRegion) {
 
 		cout << "회원님의 정보를 입력받아 '사업자' 회원가입을 진행합니다(회원가입을 취소하고 싶은 경우 각 입력과정들 중 하나에서 0을 입력.)\n" << endl;
@@ -469,49 +478,56 @@ public:
 		do {
 			cout << "아이디를 입력해주세요(띄어쓰기 허용 x, 회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_ID;
-			return !isCancelJoinMember(input_ID);
+			if (isCancelJoinMember(input_ID))
+				return false;
 		} while (atoi(input_ID) == 1);
 
 		// 비밀번호.
 		do {
 			cout << "비밀번호를 입력해주세요(띄어쓰기 허용 x, 회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_PWD;
-			return !isCancelJoinMember(input_PWD);
+			if (isCancelJoinMember(input_PWD))
+				return false;
 		} while (atoi(input_PWD) == 1);
 
 		// 사업자 이름.
 		do {
 			cout << "사업자 이름을 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_name;
-			return !isCancelJoinMember(input_name);
+			if (isCancelJoinMember(input_name))
+				return false;
 		} while (atoi(input_name) == 1);
 
 		// 전화번호.
 		do {
 			cout << "전화번호를 입력해주세요(ex 01067891234, 회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_phoneNumber;
-			return !isCancelJoinMember(input_phoneNumber);
+			if (isCancelJoinMember(input_phoneNumber))
+				return false;
 		} while (atoi(input_phoneNumber) == 1);
 
 		// 여행 가이드 자격증 번호.
 		do {
 			cout << "여행 가이드 자격증 번호('-' 제외)를 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_LicenseNumber;
-			return !isCancelJoinMember(input_LicenseNumber);
+			if (isCancelJoinMember(input_LicenseNumber))
+				return false;
 		} while (atoi(input_LicenseNumber) == '1');
 
 		// 전담 나라
 		do {
 			cout << "해당 여행사(패키지)에서 주로 취급하는 나라를 입력해주세요(ex 한국, 미국, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
 			cin >> input_mainCountry;
-			return !isCancelJoinMember(input_mainCountry);
+			if (isCancelJoinMember(input_mainCountry))
+				return false;
 		} while (atoi(input_mainCountry) == 1);
 
 		// 전담 도시(또는 유명 지역 이름 또는 유명 명소)
 		do {
 			cout << "해당 여행사(패키지)에서 주로 취급하는 도시(또는 유명 지역, 관광명소)를 입력해주세요(ex 서울, 뉴욕, 후지산, 신주쿠, 회원가입 취소 : 0, 다시 입력 : 1, 복수개 입력 시 ';'로 구분.) : ";
 			cin >> input_mainRegion;
-			return !isCancelJoinMember(input_mainRegion);
+			if (isCancelJoinMember(input_mainRegion))
+				return false;
 		} while (atoi(input_mainRegion) == 1);
 
 
@@ -519,16 +535,18 @@ public:
 	}
 
 	// 회원가입 취소
-	static bool isCancelJoinMember(const char * input) {
-		if (atoi(input) == 0) {
+	bool isCancelJoinMember(const char * input) {
+		if (!strcmp(input, "0")) {
 			return true;
 		}
+		return false;
 	}
 
 	static bool isCancelJoinMember(const char input) {
 		if (input == '0') {
-			return false;
+			return true;
 		}
+		return false;
 	}
 
 	static bool convertToPremiumMemberOrNot() {
@@ -577,7 +595,7 @@ public:
 
 	// 일반 회원으로 회원가입 시 입력받은 사용자 정보를 파일 시스템에 저장하는 함수.
 	// DB 관리 시스템 클래스 만들어서 파일 입출력은 따로 관리할까?
-	static void addUserInfo(char * input_ID, const char * input_PWD, const bool input_isPremium, const char * input_name, const char input_gender,
+	void addUserInfo(char * input_ID, const char * input_PWD, const bool input_isPremium, const char * input_name, const char input_gender,
 		const char * input_birth, const char * input_phoneNumber, const char input_advertiseAcceptOrNot,
 		const char * input_interestCountry, const char * input_interestRegion) {
 
@@ -623,10 +641,11 @@ public:
 		fputs(input_interestRegion, writer_UserInfo);
 		fputs("\n", writer_UserInfo);
 		
+		fclose(writer_UserInfo);
 	}
 
 	// 여행사로 회원가입 시 입력 받은 사용자 정보를 파일 시스템에 저장하는 함수.
-	static void addUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_agencyName, char * input_phoneNumber,
+	void addUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_agencyName, char * input_phoneNumber,
 		char * input_LicenseNumber, char * input_mainCountry, char * input_mainRegion) {
 
 		const char *fileName = strcat(input_ID, ".txt");
@@ -667,7 +686,7 @@ public:
 	}
 
 	// 가이드로 회원가입 시 입력 받은 사용자 정보를 파일 시스템에 저장하는 함수.
-	static void addUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_phoneNumber,
+	void addUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_phoneNumber,
 		char * input_LicenseNumber, char * input_mainCountry, char * input_mainRegion) {
 
 		const char *fileName = strcat(input_ID, ".txt");
@@ -708,7 +727,7 @@ public:
 	bool checkIsUser(int optionNum, char * input_ID, char * input_PWD) {
 		char user_PWD[PWD_MAX_LENGTH + 1];
 		//char user_ID[ID_MAX_LENGTH + 1];
-		const char *fileName;
+		const char *fileName=NULL;
 		int exist;
 
 		switch (optionNum)
@@ -733,14 +752,17 @@ public:
 			break;
 		}
 
-		exist = _access("test.txt", 0); // 존재하면 exist : 0, 존재하지 않으면 exist : -1.
+		exist = _access(fileName, 0); // 존재하면 exist : 0, 존재하지 않으면 exist : -1.
 		
 		// 해당 아이디 파일(input_ID.txt)이 존재하면
 		if (!exist) {
 			reader_UserInfo = fopen(fileName, "r");
 			
-			fgets(user_PWD, PWD_MAX_LENGTH, reader_UserInfo);
+			fgets(user_PWD, sizeof(user_PWD), reader_UserInfo);
 			fclose(reader_UserInfo);
+
+			// 파일로부터 읽어들인 user_PWD에서 띄어쓰기 문자 제거.
+			user_PWD[strlen(user_PWD) - 1] = '\0';
 
 			if (strcmp(input_PWD, user_PWD)) {
 				printf("비밀번호가 잘못되었습니다.\n");

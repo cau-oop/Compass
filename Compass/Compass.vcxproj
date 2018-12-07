@@ -122,6 +122,7 @@
     <ClCompile Include="Login.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="chat.h" />
     <ClInclude Include="obectClassFile.h" />
     <ClInclude Include="Package.h" />
     <ClInclude Include="WorkFlow_Greeter.h" />
