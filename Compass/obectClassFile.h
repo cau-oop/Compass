@@ -7,6 +7,7 @@
 #include "Login.h"
 using namespace std;
 
+extern LoginSystem loginSystem;
 
 class User
 {
@@ -27,6 +28,7 @@ private:
 	char rank[50] = "rank";
 	char packname[50];
 	char idtxt[50] = "abc";
+
 public:
 	User()
 	{
@@ -72,7 +74,7 @@ public:
 
 	void GetInfo()
 	{
-		LoginSystem log1;
+		/*LoginSystem log1;*/
 		//strcpy(idtxt,log1.getCurrentID());
 		strcat_s(idtxt, ".txt");
 		fstream fs(idtxt);
@@ -249,4 +251,24 @@ public:
 		getline(fs, online);
 	}
 
+	//char * getOnline(char * ID) {
+	//	const char *fileName = NULL;
+	//	int exist;
+	//	fileName = strcat(ID, ".txt");
+	//	exist = _access(fileName, 0); // 존재하면 exist : 0, 존재하지 않으면 exist : -1.
+	//	
+	//	if (exist == 0) {
+	//		FILE * fileRead = fopen(fileName, "r");
+	//		fgets(user_PWD, sizeof(user_PWD), fileRead);
+	//		fclose(reader_UserInfo);
+
+	//		// 파일로부터 읽어들인 user_PWD에서 띄어쓰기 문자 제거.
+	//		user_PWD[strlen(user_PWD) - 1] = '\0';
+	//	}
+
+	//	else {
+	//		return NULL;
+	//	}
+
+	//}
 };

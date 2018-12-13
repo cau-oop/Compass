@@ -16,9 +16,11 @@
 
 using namespace std;
 
+LoginSystem loginSystem;
+
 // system work flow
 int work();
-
+int selectFirstOption(int login_or_join_option, LoginSystem & loginSystem);
 
 int main()
 {
@@ -37,7 +39,6 @@ int main()
 }
 
 int work() {
-	LoginSystem loginSystem;
 	int login_or_join_option;
 	int login_optionNum; // 로그인 성공 시 optionNum(일반 회원 : 1, 여행사 : 2, 가이드 : 3) 저장.  로그인 실패 시 -1 저장.
 
@@ -58,18 +59,18 @@ int work() {
 		case 1:
 			Greeter::greet(loginSystem.getCurrentID(), login_optionNum);
 			Greeter::availGeneralUserOption();
-			operation_UserOption();
+			//operation_UserOption();
 			break;
 
 		case 2:
 			Greeter::greet(loginSystem.getCurrentID(), login_optionNum);
 			Greeter::availTravelAgencyOption();
-			operation_AgencyOption();
+			//operation_AgencyOption();
 			break;
 		case 3:
 			Greeter::greet(loginSystem.getCurrentID(), login_optionNum);
 			Greeter::availGuideOption();
-			operation_GuideOption();
+			//operation_GuideOption();
 			break;
 		}
 
@@ -110,19 +111,19 @@ int selectFirstOption(int login_or_join_option, LoginSystem & loginSystem) {
 	return loginSuccess;
 }
 
-void operation_UserOption() {
-	int user_optionNum; // User로 로그인 시 그 안에서 세부적인 메뉴 선택할 때 입력 받을 옵션 번호.
-	Greeter::availGeneralUserOption();
-
-	switch (user_optionNum) {
-
-	}
-}
-
-void operation_AgencyOption() {
-
-}
-
-void operation_GuideOption() {
-
-}
+//void operation_UserOption() {
+//	int user_optionNum; // User로 로그인 시 그 안에서 세부적인 메뉴 선택할 때 입력 받을 옵션 번호.
+//	Greeter::availGeneralUserOption();
+//
+//	switch (user_optionNum) {
+//
+//	}
+//}
+//
+//void operation_AgencyOption() {
+//
+//}
+//
+//void operation_GuideOption() {
+//
+//}

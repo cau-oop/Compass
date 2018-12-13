@@ -19,7 +19,7 @@
 #define BUSYNESS_LICENSE_MAX_LENGTH 10
 #define MAIN_COUNTRY_MAX_LENGTH 50
 #define MAIN_REGION_MAX_LENGTH 50
-
+ 
 #define GUIDE_LICENSE_MAX_LENGTH 30
 
 #define MAX_LOGIN_NUM 5
@@ -30,15 +30,29 @@ using namespace std;
 
 class LoginSystem {
 private:
-	char * currentLogID;
-	char * currentUserType;
+	char currentLogID[ID_MAX_LENGTH+1];
+	char currentUserType[MAX_USER_TYPE_LENGTH+1];
 	FILE * writer_UserInfo;
 	FILE * reader_UserInfo;
 
 public:
 
-	char * getCurrentID() {
+	LoginSystem() {
+		//currentLogID = (char *)malloc(sizeof(char)*(ID_MAX_LENGTH + 1));  // 로그아웃 시 동적 할당 free해줘야.
+		//currentUserType = (char *)malloc(sizeof(char)*(MAX_USER_TYPE_LENGTH + 1));
+	}
+
+	~LoginSystem() {
+		free(currentLogID);
+		free(currentUserType);
+	}
+
+	const char * getCurrentID() {
 		return currentLogID;
+	}
+
+	const char * getCurrentUserType() {
+		return currentUserType;
 	}
 
 	void createMember() {
@@ -206,15 +220,15 @@ public:
 
 				//로그인 성공 시 현재 로그인 중인 아이디 및 user type(일반회원인지, 여행사인지 가이드인지) 저장.
 				if (isSuccess) {
-					currentLogID = (char *)malloc(sizeof(char)*(ID_MAX_LENGTH+1));  // 로그아웃 시 동적 할당 free해줘야.
-					currentUserType = (char *)malloc(sizeof(char)*(MAX_USER_TYPE_LENGTH+1));
+					//currentLogID = (char *)malloc(sizeof(char)*(ID_MAX_LENGTH+1));  // 로그아웃 시 동적 할당 free해줘야.
+					//currentUserType = (char *)malloc(sizeof(char)*(MAX_USER_TYPE_LENGTH+1));
 						
 					strcpy(currentLogID, inputID);
 					strcpy(currentUserType, "general member");
 				}
 				break;
 
-				// 1인 여행사(사업자) 회원가입
+			// 1인 여행사(사업자)로 로그인시
 			case 2:
 				do {
 						
@@ -244,15 +258,15 @@ public:
 
 				//로그인 성공 시 현재 로그인 중인 아이디 및 user type(일반회원인지, 여행사인지 가이드인지) 저장.
 				if (isSuccess) {
-					currentLogID = (char *)malloc(sizeof(char)*(ID_MAX_LENGTH+1));  // 로그아웃 시 동적 할당 free해줘야.
-					currentUserType = (char *)malloc(sizeof(char)*(MAX_USER_TYPE_LENGTH+1));
+					//currentLogID = (char *)malloc(sizeof(char)*(ID_MAX_LENGTH+1));  // 로그아웃 시 동적 할당 free해줘야.
+					//currentUserType = (char *)malloc(sizeof(char)*(MAX_USER_TYPE_LENGTH+1));
 	
 					strcpy(currentLogID, inputID);
 					strcpy(currentUserType, "one-man travel agency"); 
 				}
 				break;
 
-				// 가이드 회원가입
+			// 가이드로 로그인시
 			case 3:
 				do {
 	
@@ -282,8 +296,8 @@ public:
 
 				//로그인 성공 시 현재 로그인 중인 아이디 및 user type(일반회원인지, 여행사인지 가이드인지) 저장.
 				if (isSuccess) {
-					currentLogID = (char *)malloc(sizeof(char)*(ID_MAX_LENGTH+1));  // 로그아웃 시 동적 할당 free해줘야.
-					currentUserType = (char *)malloc(sizeof(char)*(MAX_USER_TYPE_LENGTH+1));
+					//currentLogID = (char *)malloc(sizeof(char)*(ID_MAX_LENGTH+1));  // 로그아웃 시 동적 할당 free해줘야.
+					//currentUserType = (char *)malloc(sizeof(char)*(MAX_USER_TYPE_LENGTH+1));
 		
 					strcpy(currentLogID, inputID);
 					strcpy(currentUserType, "guide");
@@ -471,7 +485,7 @@ public:
 	bool getUserInfo(char * input_ID, char * input_PWD, char * input_name, char * input_phoneNumber,
 		char * input_LicenseNumber, char * input_mainCountry, char * input_mainRegion) {
 
-		cout << "회원님의 정보를 입력받아 '사업자' 회원가입을 진행합니다(회원가입을 취소하고 싶은 경우 각 입력과정들 중 하나에서 0을 입력.)\n" << endl;
+		cout << "회원님의 정보를 입력받아 '가이드' 회원가입을 진행합니다(회원가입을 취소하고 싶은 경우 각 입력과정들 중 하나에서 0을 입력.)\n" << endl;
 		cout << "\n회원 아이디와 비밀번호를 설정합니다" << endl;
 
 		// 아이디.
@@ -492,7 +506,7 @@ public:
 
 		// 사업자 이름.
 		do {
-			cout << "사업자 이름을 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
+			cout << "가이드 이름을 입력해주세요(회원가입 취소 : 0, 다시 입력 : 1) : ";
 			cin >> input_name;
 			if (isCancelJoinMember(input_name))
 				return false;
@@ -702,7 +716,7 @@ public:
 		// 사업자 이름 저장.
 		fputs(input_name, writer_UserInfo);
 		fputs("\n", writer_UserInfo);
-
+			
 		// phone number 저장.
 		fputs(input_phoneNumber, writer_UserInfo);
 		fputs("\n", writer_UserInfo);

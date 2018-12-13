@@ -32,7 +32,7 @@
     <ClInclude Include="Package.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="chat.h">
+    <ClInclude Include="chat_clnt_win.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
